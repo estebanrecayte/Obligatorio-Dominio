@@ -54,7 +54,7 @@ class Program
             }
             catch (Exception)
             {
-                Console.WriteLine("Ingrese un número válido.");
+                Console.WriteLine("Ingrese un número válido - PRUEBA.");
             }
         }
     }
