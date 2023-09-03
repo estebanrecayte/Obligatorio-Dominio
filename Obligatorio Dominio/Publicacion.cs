@@ -10,6 +10,6 @@ namespace Obligatorio_Dominio
     {
         public int Id { get; private set; }
         public string Titulo { get; private set; }
-        public string Autor { }
+        public string Autor { get; private set; }
     }
 }
