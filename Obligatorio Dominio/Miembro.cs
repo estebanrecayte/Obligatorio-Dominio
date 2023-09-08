@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Obligatorio_Dominio
 {
-    public class Miembro
+    public class Miembro : Usuario
     {
         public int Id { get; set; }
         public string Nombre { get; set; }
@@ -15,7 +15,8 @@ namespace Obligatorio_Dominio
         public bool Bloqueado { get; set; }
         public List<Miembro> ListaAmigos { get; set; }
 
-        public Miembro(int id,string nombre,string apellido,DateTime fechaNacimiento, bool bloqueado, List<Miembro> listaAmigos)
+        public Miembro(string mail, string contrasena, int id, string nombre, string apellido, DateTime fechaNacimiento, bool bloqueado, List<Miembro> listaAmigos)
+            : base(mail, contrasena)
         {
             Id = id;
             Nombre = nombre;
