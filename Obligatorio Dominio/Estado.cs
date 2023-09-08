@@ -1,11 +1,12 @@
 ﻿using System;
 namespace Obligatorio_Dominio
 {
-	public class Estado
-	{
-		public Estado()
-		{
-		}
-	}
+
+    public enum Estado
+    {
+        PendienteAprobacion,
+        Aprobada,
+        Rechazada
+    }
 }
 
