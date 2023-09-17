@@ -13,7 +13,7 @@ namespace Obligatorio_Dominio
         public string Apellido { get; set; }
         public DateTime FechaNacimiento { get; set; }
         public bool Bloqueado { get; set; }
-        public List<Miembro> ListaAmigos { get; set; }
+        private List<Miembro> ListaAmigos { get; set; }
 
         public Miembro(string mail, string contrasena, int id, string nombre, string apellido, DateTime fechaNacimiento, bool bloqueado, List<Miembro> listaAmigos)
             : base(mail, contrasena)

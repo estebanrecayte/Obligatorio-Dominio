@@ -17,14 +17,14 @@ namespace Obligatorio_Dominio
 
         public Miembro Miembro { get; private set; }
 
-        public Publicacion (int id,string titulo,string contenido,DateTime fecha,Miembro miembro) {
+        public Publicacion (string titulo,string contenido,DateTime fecha,Miembro miembro) {
 
-            Id= id;
+            Id= contadorId++;
             Titulo= titulo;
             Contenido= contenido;
             Fecha= fecha;
             Miembro= miembro;
-            contadorId++;
+            
         }    
     }
 }

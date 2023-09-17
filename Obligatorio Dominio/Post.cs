@@ -14,7 +14,7 @@ namespace Obligatorio_Dominio
 
         public bool Censurado { get; set; }
 
-        public List<Comentario> Comentarios { get; set; }
+        private List<Comentario> Comentarios { get; set; } //no pasar comentarios crear metodo
 
         public Post(string imagen,bool publico, bool censurado, List<Comentario> comentarios)
         {
