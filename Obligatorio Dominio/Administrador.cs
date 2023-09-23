@@ -8,12 +8,10 @@ namespace Obligatorio_Dominio
 {
     public class Administrador : Usuario
     {
-        public int Telefono { get; set; }
+        public Administrador(string mail, string contrasena): base(mail,contrasena)
 
-
-        public Administrador(string mail, string contrasena, int telefono): base(mail,contrasena)
         {
-            Telefono= telefono;
+
         }
     }
 }
