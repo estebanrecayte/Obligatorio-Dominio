@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace Obligatorio_Dominio
 {
-    public class Comentario
+    public class Comentario: Publicacion
     {
         public bool Estado { get; set; }
-        public Comentario(bool estado)
+        public Comentario(string texto, string contenido, DateTime fecha, Miembro miembro, bool estado):
+            base (texto, contenido, fecha, miembro)
         {
             Estado = estado;
         }
