@@ -8,8 +8,7 @@ namespace Obligatorio_Dominio
 {
     public class Administrador : Usuario
     {
-        public Administrador(string mail, string contrasena): base(mail,contrasena)
-
+        public Administrador(string mail, string contrasena) : base(mail, contrasena)
         {
 
         }

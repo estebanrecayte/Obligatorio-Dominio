@@ -23,10 +23,10 @@ namespace Obligatorio_Program
                 switch (opcion)
                 {
                     case 1:
-                         //Implementar alta de miembro
+                        // Implementar alta de miembro
                         break;
                     case 2:
-                        //Implementar listar publicaciones por email de miembro
+                        // Implementar listar publicaciones por email de miembro
                         break;
                     case 3:
                         // Implementar listar posts en los que ha realizado comentarios por email de miembro
@@ -67,7 +67,6 @@ namespace Obligatorio_Program
                 catch (FormatException)
                 {
                     Console.WriteLine("Ingrese un número válido.");
-                    //commit para arreglar errores
                 }
             }
         }
