@@ -8,12 +8,12 @@ namespace Obligatorio_Dominio
 {
     public class Comentario : Publicacion
     {
-        public bool Estado { get; set; }
+        public bool EsPrivado { get; private set; }
 
-        public Comentario(string texto, string contenido, DateTime fecha, Miembro miembro, bool estado)
-            : base(texto, contenido, fecha, miembro)
+        public Comentario(string titulo, string contenido, DateTime fecha, Miembro autor, TipoReaccion tipoReaccion, bool esPrivado)
+            : base(titulo, contenido, fecha, autor, tipoReaccion)
         {
-            Estado = estado;
+            EsPrivado = esPrivado;
         }
     }
 }

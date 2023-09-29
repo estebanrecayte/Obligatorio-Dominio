@@ -1,46 +1,97 @@
 ﻿using System;
+using System.Collections.Generic;
+
 namespace Obligatorio_Dominio
 {
-	public class Sistema
-	{
+    public class Sistema
+    {
         public List<Miembro> _miembros = new List<Miembro>();
         public List<Administrador> _administradores = new List<Administrador>();
-        private List<Invitacion> _invitaciones = new List<Invitacion>();
-        private List<Publicacion> _publicaciones = new List<Publicacion>();
+        public List<Invitacion> _invitaciones = new List<Invitacion>();
+        public List<Publicacion> _publicaciones = new List<Publicacion>();
         private List<Reaccion> _reacciones = new List<Reaccion>();
 
-
         public Sistema()
-		{
+        {
             PrecargaMiembros();
             PrecargaAdm();
             PrecargaInvitaciones();
-            PrecargaPostyComentarios();
-            PrecargaReacciones();
+            PrecargaPosts();
+            //PrecargaReacciones();
         }
 
         public void Precargas()
-		{
-			PrecargaMiembros();
+        {
+            PrecargaMiembros();
             PrecargaAdm();
             PrecargaInvitaciones();
-			PrecargaPostyComentarios();
-			PrecargaReacciones();
-		}
-
-        private void PrecargaReacciones()
-        {
-            throw new NotImplementedException();
+            PrecargaPosts();
+            //PrecargaReacciones();
         }
 
-        private void PrecargaPostyComentarios()
+        public void PrecargaInvitaciones()
         {
-            throw new NotImplementedException();
+            List<string> correosDeseados = new List<string>
+            {
+                "esteban@gmail.com", "mateo@gmail.com", "carlos@gmail.com",
+                "laura@gmail.com", "maria@gmail.com", "pedro@gmail.com",
+                "luis@gmail.com", "sara@gmail.com", "andres@gmail.com",
+                "lucas@gmail.com"
+            };
+            List<Miembro> miembrosDeseados = new List<Miembro>();
+
+            foreach (string correo in correosDeseados)
+            {
+                foreach (Miembro miembro in _miembros)
+                {
+                    if (miembro.Mail == correo)
+                    {
+                        miembrosDeseados.Add(miembro);
+                        break; // Rompemos el bucle interno cuando encontramos el miembro
+                    }
+                }
+            }
+
+            if (miembrosDeseados.Count == correosDeseados.Count)
+            {
+                Random random = new Random();
+                List<Miembro> miembrosProcesados = new List<Miembro>(); // Para rastrear los miembros que ya han enviado invitaciones
+
+                foreach (Miembro miembro1 in miembrosDeseados)
+                {
+                    miembrosProcesados.Add(miembro1); // Agregamos miembro1 a la lista de miembros procesados
+
+                    foreach (Miembro miembro2 in miembrosDeseados)
+                    {
+                        if (miembro1 != miembro2 && !miembrosProcesados.Contains(miembro2))
+                        {
+                            // Generar un estado aleatorio para la invitación
+                            Estado estadoAleatorio = (Estado)random.Next(0, Enum.GetValues(typeof(Estado)).Length);
+
+                            Invitacion invitacion = new Invitacion(miembro1, miembro2, DateTime.Now, estadoAleatorio);
+                            AltaInvitacion(invitacion);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                throw new Exception("No se pueden crear invitaciones porque no se encontraron suficientes miembros en el sistema.");
+            }
         }
 
-        private void PrecargaInvitaciones()
+        private void AltaInvitacion(Invitacion invitacion)
         {
-            throw new NotImplementedException();
+            if (invitacion == null)
+            {
+                throw new Exception("La invitación no es válida.");
+            }
+            if (_invitaciones.Contains(invitacion))
+            {
+                throw new Exception("La invitación ya existe.");
+            }
+
+            _invitaciones.Add(invitacion);
         }
 
         private void PrecargaAdm()
@@ -48,7 +99,6 @@ namespace Obligatorio_Dominio
             Administrador unAdministrador = new Administrador("esteban@gmail.com", "contrasena123");
             AltaAdministrador(unAdministrador);
         }
-
 
         public void AltaAdministrador(Administrador administrador)
         {
@@ -97,7 +147,6 @@ namespace Obligatorio_Dominio
             AltaMiembro(unMiembro10);
         }
 
-
         public void AltaMiembro(Miembro miembro)
         {
             if (miembro == null)
@@ -112,6 +161,73 @@ namespace Obligatorio_Dominio
             _miembros.Add(miembro);
             // validar con equals
         }
+
+        public void PrecargaPosts()
+        {
+            Random random = new Random();
+
+            Miembro[] autores = new Miembro[]
+            {
+            _miembros[0], // Esteban
+            _miembros[1], // Mateo
+            _miembros[2], // Carlos
+            _miembros[3], // Laura
+            _miembros[4]  // Maria
+            };
+
+            DateTime fechaEspecifica = new DateTime(2023, 1, 1);
+
+            for (int i = 0; i < 5; i++)
+            {
+                Miembro autor = autores[i];
+                TipoReaccion reaccionAleatoria = (TipoReaccion)random.Next(0, Enum.GetValues(typeof(TipoReaccion)).Length);
+
+                DateTime fechaPublicacion;
+
+                if (i % 2 == 0)
+                {
+                    fechaPublicacion = fechaEspecifica;
+                }
+                else
+                {
+                    fechaPublicacion = DateTime.Now;
+                }
+
+                Post post = new Post($"Título del Post {i + 1}", $"Contenido del Post {i + 1}", fechaPublicacion, reaccionAleatoria, autor, $"imagen{i + 1}.jpg", i % 2 == 0, i % 2 != 0);
+
+                for (int j = 0; j < 3; j++)
+                {
+                    int comentarioRandom = random.Next(0, _miembros.Count);
+                    Miembro comentarista = _miembros[comentarioRandom];
+                    Comentario comentario = new Comentario($"Comentario {j + 1}", $"Contenido del comentario {j + 1}", fechaPublicacion, comentarista, reaccionAleatoria, false);
+                    post.AgregarComentario(comentario);
+                }
+
+                AltaPublicacion(post);
+            }
+        }
+
+        public void AltaPublicacion(Publicacion publicacion)
+        {
+            if (publicacion == null)
+            {
+                throw new Exception("La publicación no es válida.");
+            }
+            if (_publicaciones.Contains(publicacion))
+            {
+                throw new Exception("La publicación ya existe.");
+            }
+
+            _publicaciones.Add(publicacion);
+
+            // Verificar si la publicación es de tipo Post y tiene comentarios
+            if (publicacion is Post post)
+            {
+                foreach (var comentario in post.Comentarios)
+                {
+                    _publicaciones.Add(comentario); // Agregar cada comentario a la lista de publicaciones
+                }
+            }
+        }
     }
 }
-

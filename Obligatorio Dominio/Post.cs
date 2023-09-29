@@ -6,21 +6,31 @@ using System.Threading.Tasks;
 
 namespace Obligatorio_Dominio
 {
-    public class Post: Publicacion
+    public class Post : Publicacion
     {
-        public string Imagen { get; set; }
-        public bool Publico {get; set; }
-        public bool Censurado { get; set; }
+        public string Imagen { get; private set; }
+        public bool Publico { get; private set; }
+        public bool Censurado { get; private set; }
+        public List<Comentario> Comentarios { get; private set; } // Lista de comentarios
 
-        private List<Comentario> Comentarios { get; set; } //no pasar comentarios crear meto2 porque el profe nos dijo esto? no nos acordamos. 
-
-        public Post (string texto, string contenido, DateTime fecha, Miembro miembro, string imagen,bool publico, bool censurado, List<Comentario> comentarios)
-            : base(texto,contenido, fecha,miembro)
+        public Post(string titulo, string contenido, DateTime fecha, TipoReaccion tipoReaccion , Miembro autor, string imagen, bool publico, bool censurado)
+            : base(titulo, contenido, fecha, autor, tipoReaccion)
         {
             Imagen = imagen;
             Publico = publico;
             Censurado = censurado;
-            Comentarios = comentarios;
+            Comentarios = new List<Comentario>(); // Inicializar la lista de comentarios
+        }
+
+        // Métodos públicos para agregar y eliminar comentarios
+        public void AgregarComentario(Comentario comentario)
+        {
+            Comentarios.Add(comentario);
+        }
+
+        public void EliminarComentario(Comentario comentario)
+        {
+            Comentarios.Remove(comentario);
         }
     }
 }

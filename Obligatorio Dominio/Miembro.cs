@@ -12,8 +12,8 @@ namespace Obligatorio_Dominio
         public string Apellido { get; set; }
         public DateTime? FechaNacimiento { get; set; }
         public bool Bloqueado { get; set; }
-        //private List<Miembro> ListaAmigos { get; set; }
-        //private List<Invitacion> ListaInvitaciones { get; set; }
+        private List<Miembro> ListaAmigos { get; set; }
+        private List<Invitacion> ListaInvitaciones { get; set; }
 
         public Miembro(string mail, string contrasena, string nombre, string apellido, DateTime fechaNacimiento, bool bloqueado)
             : base(mail, contrasena)
@@ -22,8 +22,8 @@ namespace Obligatorio_Dominio
             Apellido = apellido;
             FechaNacimiento = fechaNacimiento.Date;
             Bloqueado = bloqueado;
-            //ListaAmigos = listaAmigos;
-            //ListaInvitaciones = listaInvitaciones;
+            ListaAmigos = new List<Miembro>();
+            ListaInvitaciones = new List<Invitacion>();
         }
 
         public override void Validar()
@@ -35,6 +35,7 @@ namespace Obligatorio_Dominio
             ValidarFechaNacimiento();
             //ValidarBloqueado();
         }
+
 
         private void ValidarMail()
         {
@@ -104,10 +105,10 @@ namespace Obligatorio_Dominio
         //    return respuesta;
         //}
 
-        public override bool Equals(object? obj)
-        {
-            Miembro? unM = obj as Miembro;
-            return unM != null && Mail == unM.Mail;
-        }
+        //public override bool Equals(object? obj)
+        //{
+        //    Miembro? unM = obj as Miembro;
+        //    return unM != null && Mail == unM.Mail;
+        //}
     }
 }
