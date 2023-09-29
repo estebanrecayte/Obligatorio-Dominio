@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Obligatorio_Dominio
 {
-    public class Usuario
+    public abstract class Usuario
     {
         public string Mail { get; private set; }
         public string Contrasena { get; private set; }
@@ -14,8 +14,12 @@ namespace Obligatorio_Dominio
         public Usuario(string mail, string contrasena) { 
             Mail = mail;
             Contrasena = contrasena;
+
         }
 
 
+        public abstract void Validar();
+
     }
+
 }

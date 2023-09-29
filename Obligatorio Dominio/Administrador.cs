@@ -12,5 +12,34 @@ namespace Obligatorio_Dominio
         {
 
         }
+
+        public override void Validar()
+        {
+            ValidarMail();
+            ValidarContrasena();
+        }
+
+        private void ValidarMail()
+        {
+            if (string.IsNullOrEmpty(Mail))
+            {
+                throw new Exception("El correo no puede ser vacío");
+            }
+        }
+
+        private void ValidarContrasena()
+        {
+            if (string.IsNullOrEmpty(Contrasena))
+            {
+                throw new Exception("La contraseña no puede ser vacía");
+            }
+        }
+
+
+        public override bool Equals(object? obj)
+        {
+            Administrador? unA = obj as Administrador;
+            return unA != null && Mail == unA.Mail;
+        }
     }
 }
