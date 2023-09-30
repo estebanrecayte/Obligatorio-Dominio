@@ -13,6 +13,12 @@ namespace Obligatorio_Dominio
 
         }
 
+        public void BloquearMiembro(Miembro miembro)
+        {
+            miembro.Bloqueado = true;
+            // Aquí puedes agregar lógica adicional, como revocar amistades o desactivar invitaciones pendientes.
+        }
+
         public override void Validar()
         {
             ValidarMail();
