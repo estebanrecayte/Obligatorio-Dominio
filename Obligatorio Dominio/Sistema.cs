@@ -13,11 +13,7 @@ namespace Obligatorio_Dominio
 
         public Sistema()
         {
-            PrecargaMiembros();
-            PrecargaAdm();
-            PrecargaInvitaciones();
-            PrecargaPosts();
-            //PrecargaReacciones();
+            Precargas();
         }
 
         public void Precargas()
