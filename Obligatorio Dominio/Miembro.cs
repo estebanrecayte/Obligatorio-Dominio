@@ -20,7 +20,7 @@ namespace Obligatorio_Dominio
         {
             Nombre = nombre;
             Apellido = apellido;
-            FechaNacimiento = fechaNacimiento.Date;
+            FechaNacimiento = fechaNacimiento;
             Bloqueado = bloqueado;
             ListaAmigos = new List<Miembro>();
             ListaInvitaciones = new List<Invitacion>();
@@ -35,7 +35,6 @@ namespace Obligatorio_Dominio
             ValidarFechaNacimiento();
             //ValidarBloqueado();
         }
-
 
         private void ValidarMail()
         {
@@ -85,30 +84,22 @@ namespace Obligatorio_Dominio
             }
         }
 
-
         //private void ValidarBloqueado()
         //{
         //    // Aquí debes agregar tu lógica para validar si el usuario está bloqueado o no.
         //    // Puedes lanzar una excepción si el usuario está bloqueado según tu lógica.
         //}
 
-
-        //public override string ToString()
-        //{
-        //    string respuesta = string.Empty;
-        //    respuesta += $"Mail: {Mail} \n";
-        //    respuesta += $"Contrasena: **** \n";
-        //    respuesta += $"Nombre: {Nombre} \n";
-        //    respuesta += $"Apellido: {Apellido} \n";
-        //    respuesta += $"Fecha de nacimiento: {FechaNacimiento} \n";
-        //    respuesta += $"Bloqueado?: {Bloqueado} \n";
-        //    return respuesta;
-        //}
-
-        //public override bool Equals(object? obj)
-        //{
-        //    Miembro? unM = obj as Miembro;
-        //    return unM != null && Mail == unM.Mail;
-        //}
+        public override string ToString()
+        {
+            string respuesta = string.Empty;
+            respuesta += $"Mail: {Mail} \n";
+            respuesta += $"Contrasena: **** \n";
+            respuesta += $"Nombre: {Nombre} \n";
+            respuesta += $"Apellido: {Apellido} \n";
+            respuesta += $"Fecha de nacimiento: {FechaNacimiento?.ToShortDateString()} \n";
+            respuesta += $"Bloqueado?: {Bloqueado} \n";
+            return respuesta;
+        }
     }
 }

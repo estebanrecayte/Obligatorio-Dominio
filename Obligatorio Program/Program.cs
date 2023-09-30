@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using Obligatorio_Dominio;
 
 namespace Obligatorio_Program
@@ -5,6 +7,7 @@ namespace Obligatorio_Program
     internal class Program
     {
         private static Sistema unSistema = new Sistema();
+
         static void Main(string[] args)
         {
             int opcion;
@@ -24,7 +27,7 @@ namespace Obligatorio_Program
                 switch (opcion)
                 {
                     case 1:
-                        AltaMiembro();// Recordar hacer clase abstracta en usuario
+                        AltaMiembro();
                         break;
                     case 2:
                         Console.Write("Ingrese el correo electrónico del miembro: ");
@@ -37,19 +40,14 @@ namespace Obligatorio_Program
                         ListarPostsConComentariosDeMiembro(emailMiembroConComentarios);
                         break;
                     case 4:
-                        Console.Write("Ingrese la fecha de inicio (YYYY-MM-DD): ");
-                        DateTime fechaInicio;
-                        DateTime.TryParse(Console.ReadLine(), out fechaInicio);
-
-                        Console.Write("Ingrese la fecha de fin (YYYY-MM-DD): ");
-                        DateTime fechaFin;
-                        DateTime.TryParse(Console.ReadLine(), out fechaFin);
-
-                        ListarPostsEntreFechas(fechaInicio, fechaFin);
+                        ListarPostsEntreFechasDesdeConsola();
                         break;
                     case 5:
-                        ListarPostsPreCargados();
-                        // Implementar obtener miembros con más publicaciones
+                        List<Miembro> miembrosConMasPublicaciones = ListarMiembrosConMasPublicaciones();
+                        MostrarMiembrosConMasPublicaciones(miembrosConMasPublicaciones);
+                        break;
+                    case 6:
+                        ListarMiembros();
                         break;
                     case 0:
                         Console.WriteLine("Saliendo del programa.");
@@ -64,8 +62,6 @@ namespace Obligatorio_Program
 
             } while (opcion != 0);
         }
-
-
 
         static int PedirNumero()
         {
@@ -86,7 +82,6 @@ namespace Obligatorio_Program
                 }
             }
         }
-
 
         private static void AltaMiembro()
         {
@@ -113,14 +108,11 @@ namespace Obligatorio_Program
                 Console.Write("¿Está bloqueado? (true/false): ");
                 bool bloqueado = bool.Parse(Console.ReadLine());
 
-                // Crear una instancia de Miembro con los datos ingresados.
                 Miembro nuevoMiembro = new Miembro(mail, contrasena, nombre, apellido, fechaNacimiento, bloqueado);
 
-                // Llamar al método Validar() para realizar validaciones adicionales.
                 nuevoMiembro.Validar();
 
-                // Si llegamos aquí sin excepciones, agregar el nuevo miembro al sistema.
-                unSistema.AltaMiembro(nuevoMiembro); // Debes implementar este método en tu clase Sistema.
+                unSistema.AltaMiembro(nuevoMiembro);
 
                 Console.WriteLine("Miembro agregado con éxito.");
             }
@@ -129,7 +121,6 @@ namespace Obligatorio_Program
                 Console.WriteLine($"Error al agregar el miembro: {ex.Message}");
             }
         }
-
 
         private static void ListarPublicacionesPorMiembro(string email)
         {
@@ -159,9 +150,9 @@ namespace Obligatorio_Program
             {
                 if (publicacion is Post)
                 {
-                    Post post = (Post)publicacion; // Convierte la publicación en un Post
+                    Post post = (Post)publicacion;
                     Console.WriteLine($"Título: {post.Titulo}");
-                    Console.WriteLine($"Fecha: {post.Fecha.Date.ToShortDateString()}"); // para pasar solo la fecha
+                    Console.WriteLine($"Fecha: {post.Fecha.Date.ToShortDateString()}");
                     Console.WriteLine($"Contenido: {post.Contenido}");
                     Console.WriteLine($"Autor: {post.Autor.Nombre} {post.Autor.Apellido}");
                     Console.WriteLine($"Imagen: {post.Imagen}");
@@ -195,19 +186,17 @@ namespace Obligatorio_Program
                         if (comentario.Autor.Mail == emailPostConComentario)
                         {
                             Console.WriteLine($"El post: {post.Titulo} tiene comentarios de {comentario.Autor.Nombre}");
-                            break; // Sal del bucle interno una vez que encuentres un comentario del miembro
+                            break;
                         }
                     }
                 }
             }
         }
 
-
         private static void ListarPostsEntreFechas(DateTime fechaInicio, DateTime fechaFin)
         {
             Console.WriteLine($"Posts realizados entre {fechaInicio.ToShortDateString()} y {fechaFin.ToShortDateString()}:\n");
 
-            // Recorre la lista en sentido inverso
             for (int i = unSistema._publicaciones.Count - 1; i >= 0; i--)
             {
                 var publicacion = unSistema._publicaciones[i];
@@ -232,5 +221,94 @@ namespace Obligatorio_Program
             }
         }
 
+        private static List<Miembro> ListarMiembrosConMasPublicaciones()
+        {
+            int mayor = 0;
+            List<Miembro> aux = new List<Miembro>();
+
+            foreach (Miembro mie in unSistema._miembros)
+            {
+                int cantidad = 0;
+
+                foreach (Publicacion publicacion in unSistema._publicaciones)
+                {
+                    if (publicacion.Autor == mie)
+                    {
+                        cantidad++;
+                    }
+                }
+
+                if (cantidad > mayor)
+                {
+                    mayor = cantidad;
+                    aux.Clear();
+                    aux.Add(mie);
+                }
+                else if (cantidad == mayor)
+                {
+                    aux.Add(mie);
+                }
+            }
+
+            return aux;
+        }
+
+        private static void MostrarMiembrosConMasPublicaciones(List<Miembro> miembrosConMasPublicaciones)
+        {
+            foreach (Miembro miembro in miembrosConMasPublicaciones)
+            {
+                Console.WriteLine($"Miembro con más publicaciones:");
+                Console.WriteLine($"Nombre: {miembro.Nombre}");
+                Console.WriteLine($"Apellido: {miembro.Apellido}");
+                Console.WriteLine($"Correo Electrónico: {miembro.Mail}");
+                Console.WriteLine("--------------");
+            }
+        }
+
+        private static bool ValidarFecha(DateTime fecha)
+        {
+            DateTime fechaMinima = new DateTime(1990, 1, 1);
+            DateTime fechaMaxima = DateTime.Now;
+
+            return (fecha >= fechaMinima && fecha <= fechaMaxima);
+        }
+
+        private static void ListarPostsEntreFechasDesdeConsola()
+        {
+            Console.Write("Ingrese la fecha de inicio (YYYY-MM-DD): ");
+            DateTime fechaInicio;
+            if (!DateTime.TryParse(Console.ReadLine(), out fechaInicio) || !ValidarFecha(fechaInicio))
+            {
+                Console.WriteLine("Fecha de inicio no válida. Debe estar entre 1990 y la fecha actual.");
+                return;
+            }
+
+            Console.Write("Ingrese la fecha de fin (YYYY-MM-DD): ");
+            DateTime fechaFin;
+            if (!DateTime.TryParse(Console.ReadLine(), out fechaFin) || !ValidarFecha(fechaFin))
+            {
+                Console.WriteLine("Fecha de fin no válida. Debe estar entre 1990 y la fecha actual.");
+                return;
+            }
+
+            ListarPostsEntreFechas(fechaInicio, fechaFin);
+        }
+
+        private static void ListarMiembros()
+        {
+            List<Miembro> listaMiembro = unSistema._miembros;
+            if (listaMiembro.Count == 0)
+            {
+                Console.WriteLine("No hay miembros.");
+            }
+            else
+            {
+                foreach (Miembro unMiembro in listaMiembro)
+                {
+                    Console.WriteLine(unMiembro);
+                }
+            }
+            Console.ReadKey();
+        }
     }
 }

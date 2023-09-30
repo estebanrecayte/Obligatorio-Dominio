@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+
 namespace Obligatorio_Dominio
 {
     public class Reaccion
@@ -13,4 +15,3 @@ namespace Obligatorio_Dominio
         }
     }
 }
-

@@ -11,15 +11,18 @@ namespace Obligatorio_Dominio
         public string Mail { get; private set; }
         public string Contrasena { get; private set; }
 
-        public Usuario(string mail, string contrasena) { 
+        public Usuario(string mail, string contrasena)
+        {
             Mail = mail;
             Contrasena = contrasena;
-
         }
-
 
         public abstract void Validar();
 
+        public override bool Equals(object? obj)
+        {
+            Usuario? unU = obj as Usuario;
+            return unU != null && Mail == unU.Mail;
+        }
     }
-
 }

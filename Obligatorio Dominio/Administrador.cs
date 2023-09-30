@@ -35,11 +35,5 @@ namespace Obligatorio_Dominio
             }
         }
 
-
-        public override bool Equals(object? obj)
-        {
-            Administrador? unA = obj as Administrador;
-            return unA != null && Mail == unA.Mail;
-        }
     }
 }

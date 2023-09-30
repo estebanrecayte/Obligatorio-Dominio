@@ -23,5 +23,12 @@ namespace Obligatorio_Dominio
             Fecha = fecha;
             Estado = estado;
         }
+
+    public override bool Equals(object? obj)
+    {
+        Invitacion? unI = obj as Invitacion;
+        return unI != null && Id == unI.Id;
+    }
+
     }
 }

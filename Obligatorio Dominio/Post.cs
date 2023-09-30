@@ -13,7 +13,7 @@ namespace Obligatorio_Dominio
         public bool Censurado { get; private set; }
         public List<Comentario> Comentarios { get; private set; } // Lista de comentarios
 
-        public Post(string titulo, string contenido, DateTime fecha, TipoReaccion tipoReaccion , Miembro autor, string imagen, bool publico, bool censurado)
+        public Post(string titulo, string contenido, DateTime fecha, TipoReaccion tipoReaccion, Miembro autor, string imagen, bool publico, bool censurado)
             : base(titulo, contenido, fecha, autor, tipoReaccion)
         {
             Imagen = imagen;
@@ -32,5 +32,6 @@ namespace Obligatorio_Dominio
         {
             Comentarios.Remove(comentario);
         }
+
     }
 }

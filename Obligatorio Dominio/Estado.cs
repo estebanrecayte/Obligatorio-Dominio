@@ -1,7 +1,7 @@
 ﻿using System;
+
 namespace Obligatorio_Dominio
 {
-
     public enum Estado
     {
         PendienteAprobacion,
@@ -9,4 +9,3 @@ namespace Obligatorio_Dominio
         Rechazada
     }
 }
-

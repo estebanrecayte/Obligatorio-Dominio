@@ -17,7 +17,8 @@ namespace Obligatorio_Dominio
         public List<Reaccion> Reacciones { get; set; }
         public TipoReaccion TipoReaccion { get; set; }
 
-        public Publicacion (string titulo,string contenido,DateTime fecha,Miembro autor, TipoReaccion tipoReaccion) {
+        public Publicacion(string titulo, string contenido, DateTime fecha, Miembro autor, TipoReaccion tipoReaccion)
+        {
             Id = ultId++; // Asignamos el valor de ultId y luego lo incrementamos
             Titulo = titulo;
             Autor = autor;
@@ -25,6 +26,12 @@ namespace Obligatorio_Dominio
             Contenido = contenido;
             Reacciones = new List<Reaccion>();
             TipoReaccion = tipoReaccion;
+        }
+
+        public override bool Equals(object? obj)
+        {
+            Publicacion? unP = obj as Publicacion;
+            return unP != null && Id == unP.Id;
         }
     }
 }

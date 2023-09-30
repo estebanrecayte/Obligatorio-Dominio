@@ -55,17 +55,16 @@ namespace Obligatorio_Dominio
             if (miembrosDeseados.Count == correosDeseados.Count)
             {
                 Random random = new Random();
-                List<Miembro> miembrosProcesados = new List<Miembro>(); // Para rastrear los miembros que ya han enviado invitaciones
+                List<Miembro> miembrosProcesados = new List<Miembro>();
 
                 foreach (Miembro miembro1 in miembrosDeseados)
                 {
-                    miembrosProcesados.Add(miembro1); // Agregamos miembro1 a la lista de miembros procesados
+                    miembrosProcesados.Add(miembro1);
 
                     foreach (Miembro miembro2 in miembrosDeseados)
                     {
                         if (miembro1 != miembro2 && !miembrosProcesados.Contains(miembro2))
                         {
-                            // Generar un estado aleatorio para la invitación
                             Estado estadoAleatorio = (Estado)random.Next(0, Enum.GetValues(typeof(Estado)).Length);
 
                             Invitacion invitacion = new Invitacion(miembro1, miembro2, DateTime.Now, estadoAleatorio);
@@ -159,8 +158,8 @@ namespace Obligatorio_Dominio
             }
             miembro.Validar();
             _miembros.Add(miembro);
-            // validar con equals
         }
+
 
         public void PrecargaPosts()
         {
@@ -220,12 +219,11 @@ namespace Obligatorio_Dominio
 
             _publicaciones.Add(publicacion);
 
-            // Verificar si la publicación es de tipo Post y tiene comentarios
             if (publicacion is Post post)
             {
                 foreach (var comentario in post.Comentarios)
                 {
-                    _publicaciones.Add(comentario); // Agregar cada comentario a la lista de publicaciones
+                    _publicaciones.Add(comentario);
                 }
             }
         }
