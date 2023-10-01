@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Obligatorio_Dominio
 {
@@ -25,7 +26,7 @@ namespace Obligatorio_Dominio
             ValidarContrasena();
         }
 
-        private void ValidarMail()
+        public void ValidarMail()
         {
             if (string.IsNullOrEmpty(Mail))
             {
@@ -39,6 +40,14 @@ namespace Obligatorio_Dominio
             {
                 throw new Exception("La contraseña no puede ser vacía");
             }
+        }
+
+        public override string ToString()
+        {
+            string respuesta = string.Empty;
+            respuesta += $"Mail: {Mail} \n";
+            respuesta += $"Contrasena: **** \n";
+            return respuesta;
         }
 
     }

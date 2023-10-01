@@ -9,7 +9,6 @@ namespace Obligatorio_Dominio
         public List<Administrador> _administradores = new List<Administrador>();
         public List<Invitacion> _invitaciones = new List<Invitacion>();
         public List<Publicacion> _publicaciones = new List<Publicacion>();
-        private List<Reaccion> _reacciones = new List<Reaccion>();
 
         public Sistema()
         {
@@ -22,7 +21,6 @@ namespace Obligatorio_Dominio
             PrecargaAdm();
             PrecargaInvitaciones();
             PrecargaPosts();
-            //PrecargaReacciones();
         }
 
         public void PrecargaInvitaciones()
@@ -87,6 +85,12 @@ namespace Obligatorio_Dominio
             }
 
             _invitaciones.Add(invitacion);
+
+            if (invitacion.Estado == Estado.Aprobada)
+            {
+                invitacion.MiembroSolicitante.ListaAmigos.Add(invitacion.MiembroSolicito);
+                invitacion.MiembroSolicito.ListaAmigos.Add(invitacion.MiembroSolicitante);
+            }
         }
 
         private void PrecargaAdm()
@@ -161,46 +165,43 @@ namespace Obligatorio_Dominio
         {
             Random random = new Random();
 
-            Miembro[] autores = new Miembro[]
+            foreach (Miembro autor in _miembros)
             {
-            _miembros[0], // Esteban
-            _miembros[1], // Mateo
-            _miembros[2], // Carlos
-            _miembros[3], // Laura
-            _miembros[4]  // Maria
-            };
+                DateTime fechaEspecifica = new DateTime(2023, 1, 1);
 
-            DateTime fechaEspecifica = new DateTime(2023, 1, 1);
-
-            for (int i = 0; i < 5; i++)
-            {
-                Miembro autor = autores[i];
-                TipoReaccion reaccionAleatoria = (TipoReaccion)random.Next(0, Enum.GetValues(typeof(TipoReaccion)).Length);
-
-                DateTime fechaPublicacion;
-
-                if (i % 2 == 0)
+                for (int i = 0; i < 5; i++)
                 {
-                    fechaPublicacion = fechaEspecifica;
-                }
-                else
-                {
-                    fechaPublicacion = DateTime.Now;
-                }
+                    TipoReaccion reaccionAleatoria = (TipoReaccion)random.Next(0, Enum.GetValues(typeof(TipoReaccion)).Length);
 
-                Post post = new Post($"Título del Post {i + 1}", $"Contenido del Post {i + 1}", fechaPublicacion, reaccionAleatoria, autor, $"imagen{i + 1}.jpg", i % 2 == 0, i % 2 != 0);
+                    DateTime fechaPublicacion;
 
-                for (int j = 0; j < 3; j++)
-                {
-                    int comentarioRandom = random.Next(0, _miembros.Count);
-                    Miembro comentarista = _miembros[comentarioRandom];
-                    Comentario comentario = new Comentario($"Comentario {j + 1}", $"Contenido del comentario {j + 1}", fechaPublicacion, comentarista, reaccionAleatoria, false);
-                    post.AgregarComentario(comentario);
+                    if (i % 2 == 0)
+                    {
+                        fechaPublicacion = fechaEspecifica;
+                    }
+                    else
+                    {
+                        fechaPublicacion = DateTime.Now;
+                    }
+
+                    bool esPublico = i % 2 == 0; // Determina si el post es público o privado
+
+                    Post post = new Post($"Título del Post {i + 1}", $"Contenido del Post {i + 1}", fechaPublicacion, reaccionAleatoria, autor, $"imagen{i + 1}.jpg", esPublico, false);
+
+                    for (int j = 0; j < 3; j++)
+                    {
+                        int comentarioRandom = random.Next(0, _miembros.Count);
+                        Miembro comentarista = _miembros[comentarioRandom];
+                        Comentario comentario = new Comentario($"Comentario {j + 1}", $"Contenido del comentario {j + 1}", fechaPublicacion, comentarista, reaccionAleatoria, esPublico);
+                        post.AgregarComentario(comentario);
+                    }
+
+                    AltaPublicacion(post);
                 }
-
-                AltaPublicacion(post);
             }
         }
+
+
 
         public void AltaPublicacion(Publicacion publicacion)
         {
@@ -223,5 +224,6 @@ namespace Obligatorio_Dominio
                 }
             }
         }
+
     }
 }

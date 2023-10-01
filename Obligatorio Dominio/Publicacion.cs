@@ -33,5 +33,12 @@ namespace Obligatorio_Dominio
             Publicacion? unP = obj as Publicacion;
             return unP != null && Id == unP.Id;
         }
+
+
+        public override string ToString()
+        {
+            string respuesta = string.Empty;
+            return respuesta;
+        }
     }
 }

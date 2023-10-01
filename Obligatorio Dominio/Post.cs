@@ -33,5 +33,14 @@ namespace Obligatorio_Dominio
             Comentarios.Remove(comentario);
         }
 
+
+        public override string ToString()
+        {
+            string respuesta = string.Empty;
+            respuesta += $"Id del post: {Id} \n";
+            respuesta += $"Titulo del post: {Titulo} \n";
+            respuesta += $"Fecha del post: {Fecha.Date.ToShortDateString()} \n";
+            return respuesta;
+        }
     }
 }

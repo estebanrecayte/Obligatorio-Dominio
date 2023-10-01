@@ -10,6 +10,9 @@ namespace Obligatorio_Program
 
         static void Main(string[] args)
         {
+            Console.WriteLine("Datos pre-cargados exitosamente, presiona cualquier tecla para continuar\n");
+            Console.ReadKey();
+
             int opcion;
             do
             {
@@ -46,9 +49,13 @@ namespace Obligatorio_Program
                         List<Miembro> miembrosConMasPublicaciones = ListarMiembrosConMasPublicaciones();
                         MostrarMiembrosConMasPublicaciones(miembrosConMasPublicaciones);
                         break;
-                    case 6:
-                        ListarMiembros();
-                        break;
+                    // UTILIZAMOS ESTOS CASES PARA VERIFICAR FUNCIONAMIENTOS - SE DEJA PARA PROXIMA ENTREGA
+                    //case 6:
+                    //    //ListarInvitaciones();
+                    //   break;
+                    //case 7:
+                    //    ListarPostsPreCargados();
+                    //    break;
                     case 0:
                         Console.WriteLine("Saliendo del programa.");
                         break;
@@ -122,59 +129,48 @@ namespace Obligatorio_Program
             }
         }
 
+
         private static void ListarPublicacionesPorMiembro(string email)
         {
-            Console.WriteLine($"Publicaciones de {email}:");
+            if (string.IsNullOrEmpty(email))
+            {
+                Console.WriteLine("Error: El correo electrónico no puede estar vacío.");
+                return;
+            }
+
+            bool correoEncontrado = false;
 
             foreach (Publicacion publicacion in unSistema._publicaciones)
             {
                 if (publicacion.Autor.Mail == email)
                 {
+
+                    correoEncontrado = true;
+                    Console.WriteLine($"Publicaciones de {email}:\n");
+
                     if (publicacion is Post)
                     {
-                        Console.WriteLine($"[Post] - Título: {publicacion.Titulo}, Contenido: {publicacion.Contenido}");
+                        Console.WriteLine($"[Post] - Id: {publicacion.Id}");
                     }
                     else if (publicacion is Comentario)
                     {
-                        Console.WriteLine($"[Comentario] - Título: {publicacion.Titulo}, Contenido: {publicacion.Contenido}");
+                        Console.WriteLine($"[Comentario] - Id: {publicacion.Id}");
                     }
                 }
             }
-        }
 
-        private static void ListarPostsPreCargados()
-        {
-            Console.WriteLine("Lista de Posts pre-cargados:");
-
-            foreach (Publicacion publicacion in unSistema._publicaciones)
+            if (!correoEncontrado)
             {
-                if (publicacion is Post)
-                {
-                    Post post = (Post)publicacion;
-                    Console.WriteLine($"Título: {post.Titulo}");
-                    Console.WriteLine($"Fecha: {post.Fecha.Date.ToShortDateString()}");
-                    Console.WriteLine($"Contenido: {post.Contenido}");
-                    Console.WriteLine($"Autor: {post.Autor.Nombre} {post.Autor.Apellido}");
-                    Console.WriteLine($"Imagen: {post.Imagen}");
-                    Console.WriteLine($"Tipo reaccion: {post.TipoReaccion}");
-                    Console.WriteLine($"Público: {(post.Publico ? "Sí" : "No")}");
-                    Console.WriteLine($"Censurado: {(post.Censurado ? "Sí" : "No")}");
-
-                    Console.WriteLine("Comentarios:");
-                    foreach (Comentario comentario in post.Comentarios)
-                    {
-                        Console.WriteLine($"  - {comentario.Titulo}: {comentario.Contenido}");
-                        Console.WriteLine($"     Autor: {comentario.Autor.Nombre} {comentario.Autor.Apellido}");
-                        Console.WriteLine($"     Es Privado: {(comentario.EsPrivado ? "Sí" : "No")}");
-                    }
-
-                    Console.WriteLine();
-                }
+                Console.WriteLine("Error: El correo electrónico no existe en los datos o no tiene publicaciones.");
             }
         }
 
+ 
         private static void ListarPostsConComentariosDeMiembro(string emailPostConComentario)
         {
+            bool correoEncontrado = false;
+            bool registrosEncontrados = false;
+
             Console.WriteLine($"Posts con comentarios realizados por {emailPostConComentario}:\n");
 
             foreach (Publicacion publicacion in unSistema._publicaciones)
@@ -186,40 +182,110 @@ namespace Obligatorio_Program
                         if (comentario.Autor.Mail == emailPostConComentario)
                         {
                             Console.WriteLine($"El post: {post.Titulo} tiene comentarios de {comentario.Autor.Nombre}");
+                            correoEncontrado = true;
+                            registrosEncontrados = true;
                             break;
                         }
                     }
                 }
             }
+
+            if (!correoEncontrado)
+            {
+                Console.WriteLine($"Error: El correo electrónico {emailPostConComentario} no existe en los datos.");
+            }
+
+            if (!registrosEncontrados)
+            {
+                Console.WriteLine("No se encontraron registros para el correo electrónico proporcionado.");
+            }
         }
 
-        private static void ListarPostsEntreFechas(DateTime fechaInicio, DateTime fechaFin)
+
+        private static void ListarPostsEntreFechasYVerificarChar(DateTime fechaInicio, DateTime fechaFin)
         {
+            bool registrosEncontrados = false;
+            List<Post> postsFiltrados = new List<Post>();
+
             Console.WriteLine($"Posts realizados entre {fechaInicio.ToShortDateString()} y {fechaFin.ToShortDateString()}:\n");
 
-            for (int i = unSistema._publicaciones.Count - 1; i >= 0; i--)
+            foreach (Publicacion publicacion in unSistema._publicaciones)
             {
-                var publicacion = unSistema._publicaciones[i];
-
                 if (publicacion is Post post &&
                     publicacion.Fecha >= fechaInicio &&
                     publicacion.Fecha <= fechaFin)
                 {
-                    Console.WriteLine($"ID: {post.Id}");
-                    Console.WriteLine($"Fecha: {post.Fecha.ToShortDateString()}");
-                    Console.WriteLine($"Título: {post.Titulo}");
-
-                    string contenido = post.Contenido;
-                    if (contenido.Length > 50)
-                    {
-                        contenido = contenido.Substring(0, 50) + "...";
-                    }
-                    Console.WriteLine($"Texto: {contenido}");
-
-                    Console.WriteLine();
+                    registrosEncontrados = true;
+                    postsFiltrados.Add(post);
                 }
             }
+
+            // Ordenar la lista de posts por título de forma descendente.
+            postsFiltrados.Sort((post1, post2) => string.Compare(post2.Titulo, post1.Titulo)); //ChatGPT
+
+            foreach (Post post in postsFiltrados)
+            {
+                Console.WriteLine(post);
+
+                string contenido = post.Contenido;
+                if (contenido.Length > 50)
+                {
+                    contenido = contenido.Substring(0, 50) + "...";
+                }
+                Console.WriteLine($"Texto: {contenido}");
+
+                Console.WriteLine();
+            }
+
+            if (!registrosEncontrados)
+            {
+                Console.WriteLine("No se encontraron registros para las fechas seleccionadas.");
+            }
         }
+
+
+        private static bool ValidarFecha(string fechaStr)
+        {
+            DateTime fecha;
+
+            if (DateTime.TryParse(fechaStr, out fecha))
+            {
+                DateTime fechaMinima = new DateTime(2000, 1, 1);
+                DateTime fechaMaxima = DateTime.Now;
+
+                return (fecha >= fechaMinima && fecha <= fechaMaxima);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private static void ListarPostsEntreFechasDesdeConsola()
+        {
+            Console.Write("Ingrese la fecha de inicio (YYYY-MM-DD): ");
+            string fechaInicioStr = Console.ReadLine();
+
+            Console.Write("Ingrese la fecha de fin (YYYY-MM-DD): ");
+            string fechaFinStr = Console.ReadLine();
+
+            DateTime fechaInicio, fechaFin;
+
+            if (!ValidarFecha(fechaInicioStr) || !ValidarFecha(fechaFinStr))
+            {
+                Console.WriteLine("Fecha no válida o formato incorrecto. Debe estar entre 2000 y la fecha actual en el formato YYYY-MM-DD.");
+                return;
+            }
+
+            if (!DateTime.TryParse(fechaInicioStr, out fechaInicio) || !DateTime.TryParse(fechaFinStr, out fechaFin))
+            {
+                Console.WriteLine("Formato de fecha incorrecto.");
+                return;
+            }
+
+            ListarPostsEntreFechasYVerificarChar(fechaInicio, fechaFin);
+        }
+
 
         private static List<Miembro> ListarMiembrosConMasPublicaciones()
         {
@@ -255,60 +321,53 @@ namespace Obligatorio_Program
 
         private static void MostrarMiembrosConMasPublicaciones(List<Miembro> miembrosConMasPublicaciones)
         {
-            foreach (Miembro miembro in miembrosConMasPublicaciones)
+            if (miembrosConMasPublicaciones.Count > 0)
             {
-                Console.WriteLine($"Miembro con más publicaciones:");
-                Console.WriteLine($"Nombre: {miembro.Nombre}");
-                Console.WriteLine($"Apellido: {miembro.Apellido}");
-                Console.WriteLine($"Correo Electrónico: {miembro.Mail}");
-                Console.WriteLine("--------------");
-            }
-        }
+                Console.WriteLine("Miembros con más publicaciones:");
 
-        private static bool ValidarFecha(DateTime fecha)
-        {
-            DateTime fechaMinima = new DateTime(1990, 1, 1);
-            DateTime fechaMaxima = DateTime.Now;
-
-            return (fecha >= fechaMinima && fecha <= fechaMaxima);
-        }
-
-        private static void ListarPostsEntreFechasDesdeConsola()
-        {
-            Console.Write("Ingrese la fecha de inicio (YYYY-MM-DD): ");
-            DateTime fechaInicio;
-            if (!DateTime.TryParse(Console.ReadLine(), out fechaInicio) || !ValidarFecha(fechaInicio))
-            {
-                Console.WriteLine("Fecha de inicio no válida. Debe estar entre 1990 y la fecha actual.");
-                return;
-            }
-
-            Console.Write("Ingrese la fecha de fin (YYYY-MM-DD): ");
-            DateTime fechaFin;
-            if (!DateTime.TryParse(Console.ReadLine(), out fechaFin) || !ValidarFecha(fechaFin))
-            {
-                Console.WriteLine("Fecha de fin no válida. Debe estar entre 1990 y la fecha actual.");
-                return;
-            }
-
-            ListarPostsEntreFechas(fechaInicio, fechaFin);
-        }
-
-        private static void ListarMiembros()
-        {
-            List<Miembro> listaMiembro = unSistema._miembros;
-            if (listaMiembro.Count == 0)
-            {
-                Console.WriteLine("No hay miembros.");
+                foreach (Miembro miembro in miembrosConMasPublicaciones)
+                {
+                    Console.WriteLine($"{miembro}");
+                    Console.WriteLine("--------------");
+                }
             }
             else
             {
-                foreach (Miembro unMiembro in listaMiembro)
-                {
-                    Console.WriteLine(unMiembro);
-                }
+                Console.WriteLine("No se encontraron miembros con más publicaciones.");
             }
-            Console.ReadKey();
         }
+
+
+        public static void MostrarListaDeAmigos()
+        {
+            foreach (Miembro miembro in unSistema._miembros)
+            {
+                Console.WriteLine($"Amigos de {miembro.Mail}:");
+                foreach (Miembro amigo in miembro.ListaAmigos)
+                {
+                    Console.WriteLine($" {amigo.Nombre} {amigo.Apellido}");
+                }
+                Console.WriteLine();
+            }
+        }
+
+        // VERIFICAR FUNCIONAMIENTO PARA VER LOS POST LISTADOS
+
+        //private static void ListarPost()
+        //{
+        //    List<Publicacion> listaPublicaciones = unSistema._publicaciones;
+        //    if (listaPublicaciones.Count == 0)
+        //    {
+        //        Console.WriteLine("No hay publicaciones.");
+        //    }
+        //    else
+        //    {
+        //        foreach (Publicacion unaPubli in listaPublicaciones)
+        //        {
+        //            Console.WriteLine(unaPubli);
+        //        }
+        //    }
+        //    Console.ReadKey();
+        //}
     }
 }

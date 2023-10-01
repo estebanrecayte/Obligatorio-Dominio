@@ -12,7 +12,7 @@ namespace Obligatorio_Dominio
         public string Apellido { get; set; }
         public DateTime? FechaNacimiento { get; set; }
         public bool Bloqueado { get; set; }
-        private List<Miembro> ListaAmigos { get; set; }
+        public List<Miembro> ListaAmigos { get; set; }
         private List<Invitacion> ListaInvitaciones { get; set; }
 
         public Miembro(string mail, string contrasena, string nombre, string apellido, DateTime fechaNacimiento, bool bloqueado)
@@ -33,7 +33,6 @@ namespace Obligatorio_Dominio
             ValidarNombre();
             ValidarApellido();
             ValidarFechaNacimiento();
-            //ValidarBloqueado();
         }
 
         private void ValidarMail()
@@ -84,84 +83,79 @@ namespace Obligatorio_Dominio
             }
         }
 
-        //private void ValidarBloqueado()
+        // POSIBLE FUTURO DESARROLLO PARA LA SEGUNDA ENTREGA
+
+        //// agreegar amigo
+        //public void EnviarSolicitudAmistad(Miembro miembroSolicitado)
         //{
-        //    // Aquí debes agregar tu lógica para validar si el usuario está bloqueado o no.
-        //    // Puedes lanzar una excepción si el usuario está bloqueado según tu lógica.
+        //    if (!Bloqueado)
+        //    {
+        //        if (!EsAmigo(miembroSolicitado) && !HaEnviadoSolicitud(miembroSolicitado))
+        //        {
+        //            bool solicitudExistente = false;
+
+        //            foreach (var invitacion in ListaInvitaciones)
+        //            {
+        //                if (invitacion.MiembroSolicitante == this && invitacion.MiembroSolicito == miembroSolicitado && invitacion.Estado == Estado.PendienteAprobacion)
+        //                {
+        //                    solicitudExistente = true;
+        //                    break; // Salir del bucle si se encuentra una solicitud existente
+        //                }
+        //            }
+
+        //            if (!solicitudExistente)
+        //            {
+        //                Invitacion invitacion = new Invitacion(this, miembroSolicitado, DateTime.Now, Estado.PendienteAprobacion);
+        //                ListaInvitaciones.Add(invitacion);
+        //                miembroSolicitado.RecibirSolicitudAmistad(invitacion);
+        //            }
+        //        }
+        //    }
         //}
 
+        //public void AceptarSolicitudAmistad(Invitacion invitacion)
+        //{
+        //    if (!Bloqueado && invitacion.Estado == Estado.PendienteAprobacion)
+        //    {
+        //        invitacion.Estado = Estado.Aprobada;
+        //        Miembro amigo = invitacion.MiembroSolicitante;
+        //        ListaAmigos.Add(amigo);
+        //        amigo.ListaAmigos.Add(this);
+        //    }
+        //}
 
-        // metodo agreegar amigo
-        public void EnviarSolicitudAmistad(Miembro miembroSolicitado)
-        {
-            if (!Bloqueado)
-            {
-                if (!EsAmigo(miembroSolicitado) && !HaEnviadoSolicitud(miembroSolicitado))
-                {
-                    bool solicitudExistente = false;
+        //public void RechazarSolicitudAmistad(Invitacion invitacion)
+        //{
+        //    if (!Bloqueado && invitacion.Estado == Estado.PendienteAprobacion)
+        //    {
+        //        invitacion.Estado = Estado.Rechazada;
+        //    }
+        //}
 
-                    foreach (var invitacion in ListaInvitaciones)
-                    {
-                        if (invitacion.MiembroSolicitante == this && invitacion.MiembroSolicito == miembroSolicitado && invitacion.Estado == Estado.PendienteAprobacion)
-                        {
-                            solicitudExistente = true;
-                            break; // Salir del bucle si se encuentra una solicitud existente
-                        }
-                    }
+        //private bool EsAmigo(Miembro miembro)
+        //{
+        //    return ListaAmigos.Contains(miembro);
+        //}
 
-                    if (!solicitudExistente)
-                    {
-                        Invitacion invitacion = new Invitacion(this, miembroSolicitado, DateTime.Now, Estado.PendienteAprobacion);
-                        ListaInvitaciones.Add(invitacion);
-                        miembroSolicitado.RecibirSolicitudAmistad(invitacion);
-                    }
-                }
-            }
-        }
+        //private bool HaEnviadoSolicitud(Miembro miembro)
+        //{
+        //    foreach (Invitacion invitacion in ListaInvitaciones)
+        //    {
+        //        if (invitacion.MiembroSolicitante == miembro)
+        //        {
+        //            return true;
+        //        }
+        //    }
+        //    return false;
+        //}
 
-        public void AceptarSolicitudAmistad(Invitacion invitacion)
-        {
-            if (!Bloqueado && invitacion.Estado == Estado.PendienteAprobacion)
-            {
-                invitacion.Estado = Estado.Aprobada;
-                Miembro amigo = invitacion.MiembroSolicitante;
-                ListaAmigos.Add(amigo);
-                amigo.ListaAmigos.Add(this);
-            }
-        }
-
-        public void RechazarSolicitudAmistad(Invitacion invitacion)
-        {
-            if (!Bloqueado && invitacion.Estado == Estado.PendienteAprobacion)
-            {
-                invitacion.Estado = Estado.Rechazada;
-            }
-        }
-
-        private bool EsAmigo(Miembro miembro)
-        {
-            return ListaAmigos.Contains(miembro);
-        }
-
-        private bool HaEnviadoSolicitud(Miembro miembro)
-        {
-            foreach (Invitacion invitacion in ListaInvitaciones)
-            {
-                if (invitacion.MiembroSolicitante == miembro)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        private void RecibirSolicitudAmistad(Invitacion invitacion)
-        {
-            if (!Bloqueado)
-            {
-                ListaInvitaciones.Add(invitacion);
-            }
-        }
+        //private void RecibirSolicitudAmistad(Invitacion invitacion)
+        //{
+        //    if (!Bloqueado)
+        //    {
+        //        ListaInvitaciones.Add(invitacion);
+        //    }
+        //}
 
         public override string ToString()
         {
