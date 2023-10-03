@@ -28,6 +28,28 @@ namespace Obligatorio_Dominio
             TipoReaccion = tipoReaccion;
         }
 
+        public void Validar()
+        {
+            ValidarContenido();
+            ValidarTitulo();
+        }
+
+        public void ValidarTitulo()
+        {
+            if (string.IsNullOrEmpty(Titulo) || Titulo.Length < 3)
+            {
+                throw new Exception("El título no puede ser vacío y debe tener al menos 3 caracteres");
+            }
+        }
+
+        public void ValidarContenido()
+        {
+            if (string.IsNullOrEmpty(Contenido))
+            {
+                throw new Exception("El contenido no puede ser vacío");
+            }
+        }
+
         public override bool Equals(object? obj)
         {
             Publicacion? unP = obj as Publicacion;

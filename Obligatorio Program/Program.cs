@@ -112,8 +112,7 @@ namespace Obligatorio_Program
                 DateTime fechaNacimiento;
                 DateTime.TryParse(Console.ReadLine(), out fechaNacimiento);
 
-                Console.Write("¿Está bloqueado? (true/false): ");
-                bool bloqueado = bool.Parse(Console.ReadLine());
+                bool bloqueado = false;
 
                 Miembro nuevoMiembro = new Miembro(mail, contrasena, nombre, apellido, fechaNacimiento, bloqueado);
 

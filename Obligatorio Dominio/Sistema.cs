@@ -41,7 +41,7 @@ namespace Obligatorio_Dominio
                     if (miembro.Mail == correo)
                     {
                         miembrosDeseados.Add(miembro);
-                        break; // Rompemos el bucle interno cuando encontramos el miembro
+                        break; // Aca rompemos el bucle interno cuando encontramos el miembro
                     }
                 }
             }
