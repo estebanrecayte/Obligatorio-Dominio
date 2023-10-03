@@ -33,7 +33,6 @@ namespace Obligatorio_Dominio
             Comentarios.Remove(comentario);
         }
 
-
         public override string ToString()
         {
             string respuesta = string.Empty;

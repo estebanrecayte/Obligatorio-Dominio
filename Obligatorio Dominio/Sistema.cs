@@ -73,7 +73,7 @@ namespace Obligatorio_Dominio
             }
         }
 
-        private void AltaInvitacion(Invitacion invitacion)
+        public void AltaInvitacion(Invitacion invitacion)
         {
             if (invitacion == null)
             {
@@ -93,7 +93,7 @@ namespace Obligatorio_Dominio
             }
         }
 
-        private void PrecargaAdm()
+        public void PrecargaAdm()
         {
             Administrador unAdministrador = new Administrador("esteban@gmail.com", "contrasena123");
             AltaAdministrador(unAdministrador);
@@ -113,7 +113,7 @@ namespace Obligatorio_Dominio
             _administradores.Add(administrador);
         }
 
-        private void PrecargaMiembros()
+        public void PrecargaMiembros()
         {
             Miembro unMiembro1 = new Miembro("esteban@gmail.com", "contrasena123", "Esteban", "Recayte", new DateTime(1995, 05, 04), false);
             AltaMiembro(unMiembro1);
