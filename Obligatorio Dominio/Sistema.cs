@@ -325,15 +325,6 @@ namespace Obligatorio_Dominio
             }
             return aux;
         }
-
-        public void MostrarMiembros(List<Miembro> miembros)
-        {
-            foreach (Miembro miembro in miembros)
-            {
-                Console.WriteLine($"{miembro}");
-                Console.WriteLine("--------------");
-            }
-        }
     }
 }
 
