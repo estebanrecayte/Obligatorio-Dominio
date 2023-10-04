@@ -250,7 +250,7 @@ namespace Obligatorio_Program
             if (miembrosConMasPublicaciones.Count > 0)
             {
                 Console.WriteLine("Miembros con más publicaciones:\n");
-                foreach (Miembro miembro in unSistema._miembros)
+                foreach (Miembro miembro in miembrosConMasPublicaciones)
                 {
                     Console.WriteLine($"{miembro}");
                     Console.WriteLine("--------------");
