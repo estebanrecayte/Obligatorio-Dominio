@@ -225,5 +225,115 @@ namespace Obligatorio_Dominio
             }
         }
 
+
+        public List<string> MostrarPostYComentariosDeMiembro(string email)
+        {
+            bool correoEncontrado = false;
+            List<string> resultados = new List<string>
+            {
+                $"Publicaciones de {email}:\n"
+            };
+
+            foreach (Publicacion publicacion in _publicaciones)
+            {
+                if (publicacion.Autor.Mail == email)
+                {
+                    correoEncontrado = true;
+
+                    if (publicacion is Post)
+                    {
+                        resultados.Add($"[Post] - Id: {publicacion.Id}");
+                    }
+                    else if (publicacion is Comentario)
+                    {
+                        resultados.Add($"[Comentario] - Id: {publicacion.Id}");
+                    }
+                }
+            }
+
+            if (!correoEncontrado)
+            {
+                resultados.Add("Error: El correo electrónico no existe en los datos o no tiene publicaciones.");
+            }
+
+            return resultados;
+        }
+
+
+        public List<string> MostrarPostConComentariosMiembro(string emailPostConComentario)
+        {
+            bool correoEncontrado = false;
+            bool registrosEncontrados = false;
+            List<string> resultados = new List<string>();
+
+            foreach (Publicacion publicacion in _publicaciones)
+            {
+                if (publicacion is Post post)
+                {
+                    foreach (Comentario comentario in post.Comentarios)
+                    {
+                        if (comentario.Autor.Mail == emailPostConComentario)
+                        {
+                            resultados.Add($"El post: {post.Titulo} tiene comentarios de {comentario.Autor.Nombre}");
+                            correoEncontrado = true;
+                            registrosEncontrados = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (!correoEncontrado)
+            {
+                resultados.Add($"Error: El correo electrónico {emailPostConComentario} no existe en los datos.");
+            }
+
+            if (!registrosEncontrados)
+            {
+                resultados.Add("No se encontraron registros para el correo electrónico proporcionado.");
+            }
+
+            return resultados;
+        }
+
+        public List<Miembro> MostrarMiembrosConMasPublic()
+        {
+            int mayor = 0;
+            List<Miembro> aux = new List<Miembro>();
+            foreach (Miembro mie in _miembros)
+            {
+                int cantidad = 0;
+
+                foreach (Publicacion publicacion in _publicaciones)
+                {
+                    if (publicacion.Autor == mie)
+                    {
+                        cantidad++;
+                    }
+                }
+
+                if (cantidad > mayor)
+                {
+                    mayor = cantidad;
+                    aux.Clear();
+                    aux.Add(mie);
+                }
+                else if (cantidad == mayor)
+                {
+                    aux.Add(mie);
+                }
+            }
+            return aux;
+        }
+
+        public void MostrarMiembros(List<Miembro> miembros)
+        {
+            foreach (Miembro miembro in miembros)
+            {
+                Console.WriteLine($"{miembro}");
+                Console.WriteLine("--------------");
+            }
+        }
     }
 }
+

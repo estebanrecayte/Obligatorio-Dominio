@@ -22,7 +22,7 @@ namespace Obligatorio_Dominio
             Comentarios = new List<Comentario>(); // Inicializar la lista de comentarios
         }
 
-        // Métodos públicos para agregar y eliminar comentarios
+        // Métodos para agregar y eliminar comentarios en un futuro
         public void AgregarComentario(Comentario comentario)
         {
             Comentarios.Add(comentario);

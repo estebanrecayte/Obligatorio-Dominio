@@ -49,13 +49,6 @@ namespace Obligatorio_Program
                         List<Miembro> miembrosConMasPublicaciones = ListarMiembrosConMasPublicaciones();
                         MostrarMiembrosConMasPublicaciones(miembrosConMasPublicaciones);
                         break;
-                    // UTILIZAMOS ESTOS CASES PARA VERIFICAR FUNCIONAMIENTOS - SE DEJA PARA PROXIMA ENTREGA
-                    //case 6:
-                    //    //ListarInvitaciones();
-                    //   break;
-                    //case 7:
-                    //    ListarPostsPreCargados();
-                    //    break;
                     case 0:
                         Console.WriteLine("Saliendo del programa.");
                         break;
@@ -136,67 +129,27 @@ namespace Obligatorio_Program
                 Console.WriteLine("Error: El correo electrónico no puede estar vacío.");
                 return;
             }
+            List<string> resultados = unSistema.MostrarPostYComentariosDeMiembro(email);
 
-            bool correoEncontrado = false;
-
-            foreach (Publicacion publicacion in unSistema._publicaciones)
+            foreach (string resultado in resultados)
             {
-                if (publicacion.Autor.Mail == email)
-                {
-
-                    correoEncontrado = true;
-                    Console.WriteLine($"Publicaciones de {email}:\n");
-
-                    if (publicacion is Post)
-                    {
-                        Console.WriteLine($"[Post] - Id: {publicacion.Id}");
-                    }
-                    else if (publicacion is Comentario)
-                    {
-                        Console.WriteLine($"[Comentario] - Id: {publicacion.Id}");
-                    }
-                }
-            }
-
-            if (!correoEncontrado)
-            {
-                Console.WriteLine("Error: El correo electrónico no existe en los datos o no tiene publicaciones.");
+                Console.WriteLine(resultado);
             }
         }
 
- 
+
         private static void ListarPostsConComentariosDeMiembro(string emailPostConComentario)
         {
-            bool correoEncontrado = false;
-            bool registrosEncontrados = false;
-
-            Console.WriteLine($"Posts con comentarios realizados por {emailPostConComentario}:\n");
-
-            foreach (Publicacion publicacion in unSistema._publicaciones)
+            if (string.IsNullOrEmpty(emailPostConComentario))
             {
-                if (publicacion is Post post)
-                {
-                    foreach (Comentario comentario in post.Comentarios)
-                    {
-                        if (comentario.Autor.Mail == emailPostConComentario)
-                        {
-                            Console.WriteLine($"El post: {post.Titulo} tiene comentarios de {comentario.Autor.Nombre}");
-                            correoEncontrado = true;
-                            registrosEncontrados = true;
-                            break;
-                        }
-                    }
-                }
+                Console.WriteLine("Error: El correo electrónico no puede estar vacío.");
+                return;
             }
+            List<string> resultados = unSistema.MostrarPostConComentariosMiembro(emailPostConComentario);
 
-            if (!correoEncontrado)
+            foreach (string resultado in resultados)
             {
-                Console.WriteLine($"Error: El correo electrónico {emailPostConComentario} no existe en los datos.");
-            }
-
-            if (!registrosEncontrados)
-            {
-                Console.WriteLine("No se encontraron registros para el correo electrónico proporcionado.");
+                Console.WriteLine(resultado);
             }
         }
 
@@ -288,33 +241,7 @@ namespace Obligatorio_Program
 
         private static List<Miembro> ListarMiembrosConMasPublicaciones()
         {
-            int mayor = 0;
-            List<Miembro> aux = new List<Miembro>();
-
-            foreach (Miembro mie in unSistema._miembros)
-            {
-                int cantidad = 0;
-
-                foreach (Publicacion publicacion in unSistema._publicaciones)
-                {
-                    if (publicacion.Autor == mie)
-                    {
-                        cantidad++;
-                    }
-                }
-
-                if (cantidad > mayor)
-                {
-                    mayor = cantidad;
-                    aux.Clear();
-                    aux.Add(mie);
-                }
-                else if (cantidad == mayor)
-                {
-                    aux.Add(mie);
-                }
-            }
-
+            List<Miembro> aux = unSistema.MostrarMiembrosConMasPublic();
             return aux;
         }
 
@@ -323,12 +250,7 @@ namespace Obligatorio_Program
             if (miembrosConMasPublicaciones.Count > 0)
             {
                 Console.WriteLine("Miembros con más publicaciones:");
-
-                foreach (Miembro miembro in miembrosConMasPublicaciones)
-                {
-                    Console.WriteLine($"{miembro}");
-                    Console.WriteLine("--------------");
-                }
+                unSistema.MostrarMiembros(miembrosConMasPublicaciones);
             }
             else
             {
@@ -350,23 +272,23 @@ namespace Obligatorio_Program
             }
         }
 
-        // VERIFICAR FUNCIONAMIENTO PARA VER LOS POST LISTADOS
+        // Verificamos si los post se listaron con exito
 
-        //private static void ListarPost()
-        //{
-        //    List<Publicacion> listaPublicaciones = unSistema._publicaciones;
-        //    if (listaPublicaciones.Count == 0)
-        //    {
-        //        Console.WriteLine("No hay publicaciones.");
-        //    }
-        //    else
-        //    {
-        //        foreach (Publicacion unaPubli in listaPublicaciones)
-        //        {
-        //            Console.WriteLine(unaPubli);
-        //        }
-        //    }
-        //    Console.ReadKey();
-        //}
+        private static void ListarPost()
+        {
+            List<Publicacion> listaPublicaciones = unSistema._publicaciones;
+            if (listaPublicaciones.Count == 0)
+            {
+                Console.WriteLine("No hay publicaciones.");
+            }
+            else
+            {
+                foreach (Publicacion unaPubli in listaPublicaciones)
+                {
+                    Console.WriteLine(unaPubli);
+                }
+            }
+            Console.ReadKey();
+        }
     }
 }

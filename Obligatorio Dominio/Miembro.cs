@@ -84,79 +84,80 @@ namespace Obligatorio_Dominio
         }
 
         // POSIBLE FUTURO DESARROLLO PARA LA SEGUNDA ENTREGA
+        // agreegar amigo
 
-        //// agreegar amigo
-        //public void EnviarSolicitudAmistad(Miembro miembroSolicitado)
-        //{
-        //    if (!Bloqueado)
-        //    {
-        //        if (!EsAmigo(miembroSolicitado) && !HaEnviadoSolicitud(miembroSolicitado))
-        //        {
-        //            bool solicitudExistente = false;
+        public void EnviarSolicitudAmistad(Miembro miembroSolicitado)
+        {
+            if (!Bloqueado)
+            {
+                if (!EsAmigo(miembroSolicitado) && !HaEnviadoSolicitud(miembroSolicitado))
+                {
+                    bool solicitudExistente = false;
 
-        //            foreach (var invitacion in ListaInvitaciones)
-        //            {
-        //                if (invitacion.MiembroSolicitante == this && invitacion.MiembroSolicito == miembroSolicitado && invitacion.Estado == Estado.PendienteAprobacion)
-        //                {
-        //                    solicitudExistente = true;
-        //                    break; // Salir del bucle si se encuentra una solicitud existente
-        //                }
-        //            }
+                    foreach (var invitacion in ListaInvitaciones)
+                    {
+                        if (invitacion.MiembroSolicitante == this && invitacion.MiembroSolicito == miembroSolicitado && invitacion.Estado == Estado.PendienteAprobacion)
+                        {
+                            solicitudExistente = true;
+                            break; // Salir del bucle si se encuentra una solicitud existente
+                        }
+                    }
 
-        //            if (!solicitudExistente)
-        //            {
-        //                Invitacion invitacion = new Invitacion(this, miembroSolicitado, DateTime.Now, Estado.PendienteAprobacion);
-        //                ListaInvitaciones.Add(invitacion);
-        //                miembroSolicitado.RecibirSolicitudAmistad(invitacion);
-        //            }
-        //        }
-        //    }
-        //}
+                    if (!solicitudExistente)
+                    {
+                        Invitacion invitacion = new Invitacion(this, miembroSolicitado, DateTime.Now, Estado.PendienteAprobacion);
+                        ListaInvitaciones.Add(invitacion);
+                        miembroSolicitado.RecibirSolicitudAmistad(invitacion);
+                    }
+                }
+            }
+        }
 
-        //public void AceptarSolicitudAmistad(Invitacion invitacion)
-        //{
-        //    if (!Bloqueado && invitacion.Estado == Estado.PendienteAprobacion)
-        //    {
-        //        invitacion.Estado = Estado.Aprobada;
-        //        Miembro amigo = invitacion.MiembroSolicitante;
-        //        ListaAmigos.Add(amigo);
-        //        amigo.ListaAmigos.Add(this);
-        //    }
-        //}
+        public void AceptarSolicitudAmistad(Invitacion invitacion)
+        {
+            if (!Bloqueado && invitacion.Estado == Estado.PendienteAprobacion)
+            {
+                invitacion.Estado = Estado.Aprobada;
+                Miembro amigo = invitacion.MiembroSolicitante;
+                ListaAmigos.Add(amigo);
+                amigo.ListaAmigos.Add(this);
+            }
+        }
 
-        //public void RechazarSolicitudAmistad(Invitacion invitacion)
-        //{
-        //    if (!Bloqueado && invitacion.Estado == Estado.PendienteAprobacion)
-        //    {
-        //        invitacion.Estado = Estado.Rechazada;
-        //    }
-        //}
+        public void RechazarSolicitudAmistad(Invitacion invitacion)
+        {
+            if (!Bloqueado && invitacion.Estado == Estado.PendienteAprobacion)
+            {
+                invitacion.Estado = Estado.Rechazada;
+            }
+        }
 
-        //private bool EsAmigo(Miembro miembro)
-        //{
-        //    return ListaAmigos.Contains(miembro);
-        //}
+        private bool EsAmigo(Miembro miembro)
+        {
+            return ListaAmigos.Contains(miembro);
+        }
 
-        //private bool HaEnviadoSolicitud(Miembro miembro)
-        //{
-        //    foreach (Invitacion invitacion in ListaInvitaciones)
-        //    {
-        //        if (invitacion.MiembroSolicitante == miembro)
-        //        {
-        //            return true;
-        //        }
-        //    }
-        //    return false;
-        //}
+        private bool HaEnviadoSolicitud(Miembro miembro)
+        {
+            foreach (Invitacion invitacion in ListaInvitaciones)
+            {
+                if (invitacion.MiembroSolicitante == miembro)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
 
-        //private void RecibirSolicitudAmistad(Invitacion invitacion)
-        //{
-        //    if (!Bloqueado)
-        //    {
-        //        ListaInvitaciones.Add(invitacion);
-        //    }
-        //}
+        private void RecibirSolicitudAmistad(Invitacion invitacion)
+        {
+            if (!Bloqueado)
+            {
+                ListaInvitaciones.Add(invitacion);
+            }
+        }
 
+        // aca terminan los posibles codigos a utilizar a futuro
         public override string ToString()
         {
             string respuesta = string.Empty;
