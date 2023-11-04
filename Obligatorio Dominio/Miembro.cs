@@ -169,5 +169,29 @@ namespace Obligatorio_Dominio
             respuesta += $"Bloqueado?: {Bloqueado} \n";
             return respuesta;
         }
+
+
+
+        public int CompareTo(Miembro otroM)
+        {
+            if (otroM == null)
+            {
+                return 1; // Si otroM es nulo, el objeto actual es mayor.
+            }
+
+            // Compara los apellidos primero.
+            int comparacionApellidos = this.Apellido.CompareTo(otroM.Apellido);
+
+            if (comparacionApellidos != 0)
+            {
+                return comparacionApellidos; // Si los apellidos son diferentes, regresa la comparación de apellidos.
+            }
+            else
+            {
+                // Si los apellidos son iguales, compara los nombres.
+                return this.Nombre.CompareTo(otroM.Nombre);
+            }
+        }
     }
 }
+

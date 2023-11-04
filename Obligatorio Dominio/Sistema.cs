@@ -5,10 +5,20 @@ namespace Obligatorio_Dominio
 {
     public class Sistema
     {
+        private static Sistema _instancia;
         public List<Miembro> _miembros = new List<Miembro>();
         public List<Administrador> _administradores = new List<Administrador>();
         public List<Invitacion> _invitaciones = new List<Invitacion>();
         public List<Publicacion> _publicaciones = new List<Publicacion>();
+
+        public static Sistema Instancia
+        {
+            get
+            {
+                if (_instancia == null) _instancia = new Sistema();
+                return _instancia;
+            }
+        }
 
         public Sistema()
         {
@@ -201,6 +211,12 @@ namespace Obligatorio_Dominio
             }
         }
 
+        public List<Miembro> OrdenarMiembrosPorNombre()
+        {
+            List<Miembro> aux = new List<Miembro>(_miembros);
+            aux.Sort((miembro1, miembro2) => miembro1.CompareTo(miembro2));
+            return aux;
+        }
 
 
         public void AltaPublicacion(Publicacion publicacion)

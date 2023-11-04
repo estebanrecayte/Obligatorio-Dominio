@@ -1,0 +1,27 @@
+﻿@using Obligatorio_Dominio
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<h1> Miembros </h1>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Nombre</th>
+            <th scope="col">Apellido</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Miembro unMiembro in ViewBag.Miembros)
+        {
+            <tr>
+                <th scope="row">@unMiembro.Nombre</th>
+                <td>@unMiembro.Apellido</td>
+            </tr>
+        }
+    </tbody>
+</table>

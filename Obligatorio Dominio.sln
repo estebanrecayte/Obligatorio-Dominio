@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Obligatorio Program", "Obli
 		{74226711-0818-481A-95DE-E9ED38027386} = {74226711-0818-481A-95DE-E9ED38027386}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppWeb", "AppWeb\AppWeb.csproj", "{8C3A328F-15FD-43EB-A884-8CC8FA74CADA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,6 +26,10 @@ Global
 		{BE406E5C-B3B6-473A-B1FE-EAFC2474A79E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BE406E5C-B3B6-473A-B1FE-EAFC2474A79E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BE406E5C-B3B6-473A-B1FE-EAFC2474A79E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C3A328F-15FD-43EB-A884-8CC8FA74CADA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C3A328F-15FD-43EB-A884-8CC8FA74CADA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C3A328F-15FD-43EB-A884-8CC8FA74CADA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C3A328F-15FD-43EB-A884-8CC8FA74CADA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
