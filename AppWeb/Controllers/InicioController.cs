@@ -9,13 +9,13 @@ using Obligatorio_Dominio;
 
 namespace AppWeb.Controllers
 {
-    public class PublicacionController : Controller
+    public class InicioController : Controller
     {
         // GET: /<controller>/
         public IActionResult Index()
         {
             return View();
         }
-    }
+    } 
 }
 

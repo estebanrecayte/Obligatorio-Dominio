@@ -15,6 +15,11 @@ namespace Obligatorio_Dominio
         public List<Miembro> ListaAmigos { get; set; }
         private List<Invitacion> ListaInvitaciones { get; set; }
 
+        public Miembro()
+        {
+
+        }
+
         public Miembro(string mail, string contrasena, string nombre, string apellido, DateTime fechaNacimiento, bool bloqueado)
             : base(mail, contrasena)
         {

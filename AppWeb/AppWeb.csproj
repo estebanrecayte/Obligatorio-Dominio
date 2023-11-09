@@ -11,10 +11,14 @@
   <ItemGroup>
     <None Remove="Controllers\" />
     <None Remove="Views\Administrador\" />
+    <None Remove="Views\Inicio\" />
+    <None Remove="Views\Registro\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
     <Folder Include="Views\Administrador\" />
+    <Folder Include="Views\Inicio\" />
+    <Folder Include="Views\Registro\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Obligatorio Dominio\Obligatorio Dominio.csproj">

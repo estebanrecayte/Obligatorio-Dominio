@@ -11,6 +11,12 @@ namespace Obligatorio_Dominio
         public string Mail { get; private set; }
         public string Contrasena { get; private set; }
 
+
+        public Usuario()
+        {
+
+        }
+
         public Usuario(string mail, string contrasena)
         {
             Mail = mail;
