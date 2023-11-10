@@ -15,11 +15,6 @@ namespace Obligatorio_Dominio
         public List<Miembro> ListaAmigos { get; set; }
         private List<Invitacion> ListaInvitaciones { get; set; }
 
-        public Miembro()
-        {
-
-        }
-
         public Miembro(string mail, string contrasena, string nombre, string apellido, DateTime fechaNacimiento, bool bloqueado)
             : base(mail, contrasena)
         {
@@ -31,13 +26,26 @@ namespace Obligatorio_Dominio
             ListaInvitaciones = new List<Invitacion>();
         }
 
+        public Miembro()
+        {
+
+        }
+
         public override void Validar()
         {
+            ValidarNombre();
             ValidarMail();
             ValidarContrasena();
-            ValidarNombre();
             ValidarApellido();
             ValidarFechaNacimiento();
+        }
+
+        private void ValidarNombre()
+        {
+            if (string.IsNullOrEmpty(Nombre))
+            {
+                throw new Exception("El nombre no puede ser vacío");
+            }
         }
 
         private void ValidarMail()
@@ -56,13 +64,6 @@ namespace Obligatorio_Dominio
             }
         }
 
-        private void ValidarNombre()
-        {
-            if (string.IsNullOrEmpty(Nombre))
-            {
-                throw new Exception("El nombre no puede ser vacío");
-            }
-        }
 
         private void ValidarApellido()
         {

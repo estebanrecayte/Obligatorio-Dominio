@@ -9,7 +9,7 @@ using Obligatorio_Dominio;
 
 namespace AppWeb.Controllers
 {
-    public class RegistroController : Controller
+    public class MiembroController : Controller
     {
         private Sistema _sistema = Sistema.Instancia;
 
@@ -19,9 +19,9 @@ namespace AppWeb.Controllers
             return View();
         }
 
-        public IActionResult CreateRegistro()
+        public IActionResult CreateMiembro()
         {
-            return View("CreateMiembro");
+            return View();
         }
 
         [HttpPost]
@@ -30,6 +30,8 @@ namespace AppWeb.Controllers
             try
             {
                 _sistema.AltaMiembro(miembro);
+                Console.WriteLine("Miembro Agregado:");
+                Console.WriteLine($"Nombre: {miembro.Mail}, {miembro.Contrasena}, {miembro.Nombre}, Edad: {miembro.Apellido}, Otros detalles: {miembro.FechaNacimiento}");
                 return RedirectToAction("CreateMiembro");
             }
             catch (Exception e)

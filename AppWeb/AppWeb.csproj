@@ -12,13 +12,13 @@
     <None Remove="Controllers\" />
     <None Remove="Views\Administrador\" />
     <None Remove="Views\Inicio\" />
-    <None Remove="Views\Registro\" />
+    <None Remove="Views\Miembro\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
     <Folder Include="Views\Administrador\" />
     <Folder Include="Views\Inicio\" />
-    <Folder Include="Views\Registro\" />
+    <Folder Include="Views\Miembro\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Obligatorio Dominio\Obligatorio Dominio.csproj">
