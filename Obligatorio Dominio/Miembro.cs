@@ -33,8 +33,8 @@ namespace Obligatorio_Dominio
 
         public override void Validar()
         {
-            ValidarNombre();
             ValidarMail();
+            ValidarNombre();
             ValidarContrasena();
             ValidarApellido();
             ValidarFechaNacimiento();

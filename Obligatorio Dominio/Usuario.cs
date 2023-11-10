@@ -8,8 +8,8 @@ namespace Obligatorio_Dominio
 {
     public abstract class Usuario
     {
-        public string Mail { get; private set; }
-        public string Contrasena { get; private set; }
+        public string Mail { get; set; }
+        public string Contrasena { get; set; }
 
 
         public Usuario()
