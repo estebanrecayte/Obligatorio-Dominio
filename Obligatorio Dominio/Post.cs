@@ -8,10 +8,10 @@ namespace Obligatorio_Dominio
 {
     public class Post : Publicacion
     {
-        public string Imagen { get; private set; }
-        public bool Publico { get; private set; }
-        public bool Censurado { get; private set; }
-        public List<Comentario> Comentarios { get; private set; } // Lista de comentarios
+        public string Imagen { get; set; }
+        public bool Publico { get;  set; }
+        public bool Censurado { get;  set; }
+        public List<Comentario> Comentarios { get; set; } // Lista de comentarios
 
         public Post(string titulo, string contenido, DateTime fecha, TipoReaccion tipoReaccion, Miembro autor, string imagen, bool publico, bool censurado)
             : base(titulo, contenido, fecha, autor, tipoReaccion)

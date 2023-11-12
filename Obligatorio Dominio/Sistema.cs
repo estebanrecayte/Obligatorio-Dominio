@@ -312,6 +312,54 @@ namespace Obligatorio_Dominio
             return resultados;
         }
 
+        public List<Post> ListarTodosLosPosts()
+        {
+            List<Post> resultados = new List<Post>();
+
+            foreach (Publicacion publicacion in _publicaciones)
+            {
+                if (publicacion is Post post)
+                {
+                    resultados.Add(post);
+                }
+            }
+            return resultados;
+        }
+
+        public List<Publicacion> ListarPublicacionesHabilitadasParaMiembro(Miembro miembro)
+        {
+            List<Publicacion> resultados = new List<Publicacion>();
+
+            foreach (Publicacion publicacion in _publicaciones)
+            {
+                if (publicacion is Post post && PostHabilitadoParaMiembro(publicacion, miembro))
+                {
+                    resultados.Add(post);
+
+                    // Agregar los comentarios habilitados para el miembro
+                    foreach (Comentario comentario in post.Comentarios)
+                    { 
+                            resultados.Add(comentario);
+                        }
+                }
+            }
+
+            return resultados;
+        }
+
+
+        public bool PostHabilitadoParaMiembro(Publicacion publicacion, Miembro miembro)
+        {
+            if (publicacion is Post post)
+            {
+                // Verificar si el post es público, pertenece a un amigo del miembro o es del propio miembro
+                return post?.Censurado == false || post?.Autor == miembro || (miembro?.ListaAmigos?.Contains(post.Autor) ?? false);
+            }
+            return false; // Por defecto, no habilitado si no es un post
+        }
+
+
+
         public List<Miembro> MostrarMiembrosConMasPublic()
         {
             int mayor = 0;

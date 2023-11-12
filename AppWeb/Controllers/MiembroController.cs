@@ -40,6 +40,16 @@ namespace AppWeb.Controllers
             }
             return View();
         }
+
+        public IActionResult PostHabilitadosMiembro(Miembro miembro)
+        {
+
+        List<Publicacion> todosLosPosts = _sistema.ListarPublicacionesHabilitadasParaMiembro(miembro);
+
+            ViewBag.Posts = todosLosPosts;
+
+            return View();
+        }
     }
 }
 

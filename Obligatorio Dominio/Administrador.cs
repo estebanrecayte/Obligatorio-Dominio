@@ -19,6 +19,11 @@ namespace Obligatorio_Dominio
             miembro.Bloqueado = true;
         }
 
+        public void BanearPost(Post post)
+        {
+            post.Censurado = true;
+        }
+
         public override void Validar()
         {
             ValidarMail();

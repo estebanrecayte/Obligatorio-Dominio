@@ -1,0 +1,37 @@
+﻿@using Obligatorio_Dominio
+@model Publicacion  
+@{
+}
+
+<h1>Publicaciones Habilitadas</h1>
+
+@if (ViewBag.Posts.Count > 0)
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Título</th>
+                <th scope="col">Contenido</th>
+                <th scope="col">Autor</th>
+                <th scope="col">Tipo Reaccion</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var publicacion in ViewBag.Posts)
+            {
+                <tr>
+                    <td>@publicacion.Titulo</td>
+                    <td>@publicacion.Contenido</td>
+                    <td>@publicacion.Autor.Nombre</td>
+                    <td>
+                       @publicacion.TipoReaccion
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No hay publicaciones habilitadas para mostrar.</p>
+}
