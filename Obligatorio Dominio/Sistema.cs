@@ -83,6 +83,30 @@ namespace Obligatorio_Dominio
             }
         }
 
+        public Administrador BuscarAdministrador(string correo)
+        {
+            foreach (var admin in _administradores)
+            {
+                if (admin.Mail == correo)
+                {
+                    return admin;
+                }
+            }
+            return null;
+        }
+
+        public Miembro BuscarMiembro(string correo)
+        {
+            foreach (var miembro in _miembros)
+            {
+                if (miembro.Mail == correo)
+                {
+                    return miembro;
+                }
+            }
+            return null;
+        }
+
         public void AltaInvitacion(Invitacion invitacion)
         {
             if (invitacion == null)

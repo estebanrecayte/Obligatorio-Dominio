@@ -24,12 +24,18 @@ namespace Obligatorio_Dominio
             Estado = estado;
         }
 
-    public override bool Equals(object? obj)
-    {
-        Invitacion? unI = obj as Invitacion;
-        return unI != null && Id == unI.Id;
-    }
+        public override bool Equals(object? obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
 
+            Invitacion otraInvitacion = (Invitacion)obj;
+
+            return MiembroSolicito.Equals(otraInvitacion.MiembroSolicito) &&
+                   MiembroSolicitante.Equals(otraInvitacion.MiembroSolicitante);
+        }
 
 
     }

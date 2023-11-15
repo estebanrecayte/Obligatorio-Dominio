@@ -13,10 +13,20 @@ namespace AppWeb.Controllers
     {
         private Sistema _sistema = Sistema.Instancia;
 
-        // GET: /<controller>/
         public IActionResult Index()
         {
-            return View();
+            string nombreMiembro = HttpContext.Session.GetString("nombreMiembro");
+
+            if (nombreMiembro != null)
+            {
+                ViewBag.MensajeBienvenida = $"Bienvenido, {nombreMiembro}!";
+                return View();
+            }
+            else
+            {
+                // Manejar el caso en el que no se encuentra el nombre en la sesión
+                return RedirectToAction("Login", "Inicio");
+            }
         }
 
         public IActionResult CreateMiembro()
@@ -30,8 +40,6 @@ namespace AppWeb.Controllers
             try
             {
                 _sistema.AltaMiembro(miembro);
-                Console.WriteLine("Miembro Agregado:");
-                Console.WriteLine($"Nombre: {miembro.Mail}, {miembro.Contrasena}, {miembro.Nombre}, Edad: {miembro.Apellido}, Otros detalles: {miembro.FechaNacimiento}");
                 return RedirectToAction("CreateMiembro");
             }
             catch (Exception e)
