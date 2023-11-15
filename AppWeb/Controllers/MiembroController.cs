@@ -52,12 +52,71 @@ namespace AppWeb.Controllers
         public IActionResult PostHabilitadosMiembro(Miembro miembro)
         {
 
-        List<Publicacion> todosLosPosts = _sistema.ListarPublicacionesHabilitadasParaMiembro(miembro);
+            List<Publicacion> todosLosPosts = _sistema.ListarPublicacionesHabilitadasParaMiembro(miembro);
 
             ViewBag.Posts = todosLosPosts;
 
             return View();
         }
+
+        public IActionResult EnviarInvitacion(string mail)
+        {
+            Miembro miembroActual = ObtenerMiembroActualDesdeSesion();
+
+            if (miembroActual == null)
+            {
+                return RedirectToAction("Login", "Inicio");
+            }
+
+            try
+            {
+                Miembro miembroDestino = _sistema.BuscarMiembro(mail);
+
+                if (miembroDestino == null)
+                {
+                    ViewBag.error = "El miembro no existe";
+                    return View();
+                }
+
+                miembroActual.EnviarSolicitudAmistad(miembroDestino);
+                Invitacion nuevaInvitacion = new Invitacion(miembroActual, miembroDestino, DateTime.Now, Estado.PendienteAprobacion);
+                _sistema.AltaInvitacion(nuevaInvitacion);
+
+                return View();
+
+            }
+            catch (Exception e)
+            {
+                ViewBag.error = e.Message;
+            }
+
+            return View();
+        }
+
+
+        public IActionResult MiembrosEnviarAmistad()
+        {
+            Miembro miembroActual = ObtenerMiembroActualDesdeSesion();
+
+            if (miembroActual == null)
+            {
+                return RedirectToAction("Login", "Inicio");
+            }
+
+            List<Miembro> miembrosDisponibles = _sistema.ObtenerMiembrosDisponiblesParaSolicitud(miembroActual.Mail);
+
+            ViewBag.MiembrosDisponibles = miembrosDisponibles;
+
+            return View();
+        }
+
+
+        public Miembro ObtenerMiembroActualDesdeSesion()
+        {
+            string mailMiembroActual = HttpContext.Session.GetString("mail");
+            return _sistema.BuscarMiembro(mailMiembroActual);
+        }
+
     }
 }
 

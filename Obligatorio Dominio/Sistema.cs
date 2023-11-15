@@ -51,7 +51,7 @@ namespace Obligatorio_Dominio
                     if (miembro.Mail == correo)
                     {
                         miembrosDeseados.Add(miembro);
-                        break; // Aca rompemos el bucle interno cuando encontramos el miembro
+                        break; 
                     }
                 }
             }
@@ -107,6 +107,29 @@ namespace Obligatorio_Dominio
             return null;
         }
 
+        public List<Miembro> ObtenerMiembrosDisponiblesParaSolicitud(string correoMiembroActual)
+        {
+            Miembro miembroActual = BuscarMiembro(correoMiembroActual);
+
+            if (miembroActual == null)
+            {
+                throw new Exception($"El miembro con correo {correoMiembroActual} no existe.");
+            }
+
+            List<Miembro> miembrosDisponibles = new List<Miembro>();
+
+            List<Miembro> todosLosMiembros = _miembros;
+            foreach (Miembro otroMiembro in todosLosMiembros)
+            {
+                if (otroMiembro != miembroActual && !miembroActual.EsAmigo(otroMiembro) && !miembroActual.HaEnviadoSolicitud(otroMiembro))
+                {
+                    miembrosDisponibles.Add(otroMiembro);
+                }
+            }
+
+            return miembrosDisponibles;
+        }
+        
         public void AltaInvitacion(Invitacion invitacion)
         {
             if (invitacion == null)

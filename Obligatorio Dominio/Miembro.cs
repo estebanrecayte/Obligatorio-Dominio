@@ -38,6 +38,11 @@ namespace Obligatorio_Dominio
             ValidarContrasena();
             ValidarApellido();
             ValidarFechaNacimiento();
+
+            if (ListaAmigos == null)
+            {
+                ListaAmigos = new List<Miembro>();
+            }
         }
 
         private void ValidarNombre()
@@ -138,12 +143,12 @@ namespace Obligatorio_Dominio
             }
         }
 
-        private bool EsAmigo(Miembro miembro)
+        public bool EsAmigo(Miembro miembro)
         {
             return ListaAmigos.Contains(miembro);
         }
 
-        private bool HaEnviadoSolicitud(Miembro miembro)
+        public bool HaEnviadoSolicitud(Miembro miembro)
         {
             foreach (Invitacion invitacion in ListaInvitaciones)
             {

@@ -44,6 +44,9 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Miembro" asp-action="PostHabilitadosMiembro"> Listar Post Habilitados </a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Miembro" asp-action="MiembrosEnviarAmistad"> Enviar solicitud de amistad </a>
+                            </li>
                         }
                         @if (@Context.Session.GetString("rol") == "miembro" || @Context.Session.GetString("rol") == "administrador")
                         {
