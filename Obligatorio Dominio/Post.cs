@@ -13,13 +13,16 @@ namespace Obligatorio_Dominio
         public bool Censurado { get;  set; }
         public List<Comentario> Comentarios { get; set; } // Lista de comentarios
 
+
+        public Post() { }
+
         public Post() : base("Título por defecto", "Contenido por defecto", DateTime.Now, null, TipoReaccion.Dislike)
         {
             Imagen = "";
             Publico = false;
             Censurado = false;
         }
-
+        
         public Post(string titulo, string contenido, DateTime fecha, TipoReaccion tipoReaccion, Miembro autor, string imagen, bool publico, bool censurado)
             : base(titulo, contenido, fecha, autor, tipoReaccion)
         {

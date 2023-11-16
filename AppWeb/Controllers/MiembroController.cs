@@ -240,7 +240,7 @@ namespace AppWeb.Controllers
                 return RedirectToAction("Login", "Inicio");
             }
 
-            if (!miembroActual.Bloqueado)
+            if (miembroActual.Bloqueado)
             {
                 ViewBag.error = "No puedes realizar publicaciones porque estás bloqueado por el administrador.";
                 return View("Error");
@@ -251,16 +251,44 @@ namespace AppWeb.Controllers
                 // Lógica para validar y agregar la publicación al sistema
                 post.EstablecerAutor(miembroActual);
                 _sistema.AltaPublicacion(post);
-
-                ViewBag.Mensaje = "Publicación realizada con éxito.";
-                return View("EstadoPublicacion");
+                return RedirectToAction("MisPublicaciones"); // Redirige a la acción MisPublicaciones después de una publicación exitosa
             }
             catch (Exception e)
             {
                 ViewBag.error = e.Message;
-                return View("CreatePost");
+                return View("Error");
             }
         }
 
+
+        public IActionResult MisPublicaciones()
+        {
+            Miembro miembroActual = ObtenerMiembroActualDesdeSesion();
+
+            if (miembroActual == null)
+            {
+                return RedirectToAction("Login", "Inicio");
+            }
+
+            if (miembroActual.Bloqueado) //cambie el simbolo ! para que verifique si esta bloqueado
+            {
+                ViewBag.error = "No puedes realizar publicaciones porque estás bloqueado por el administrador.";
+                return View("Error");
+            }
+
+            try
+            {
+                List<Publicacion> todosLosPosts = _sistema.ListarPublicacionesHabilitadasParaMiembro(miembroActual);
+                ViewBag.Posts = _sistema.ListarPublicacionesPropias(miembroActual, todosLosPosts);
+                
+
+                return View();
+            }
+            catch (Exception e)
+            {
+                ViewBag.error = e.Message;
+                return View();
+            }
+        }
     }
 }

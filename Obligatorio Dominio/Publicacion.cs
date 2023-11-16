@@ -27,6 +27,7 @@ namespace Obligatorio_Dominio
             Reacciones = new List<Reaccion>();
             TipoReaccion = tipoReaccion;
         }
+        public Publicacion() { }
 
         public void Validar()
         {

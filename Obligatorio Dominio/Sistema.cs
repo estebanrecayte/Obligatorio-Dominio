@@ -259,13 +259,13 @@ namespace Obligatorio_Dominio
 
             _publicaciones.Add(publicacion);
 
-            if (publicacion is Post post)
-            {
-                foreach (var comentario in post.Comentarios)
-                {
-                    _publicaciones.Add(comentario);
-                }
-            }
+            //if (publicacion is Post post)
+            //{
+            //    foreach (var comentario in post.Comentarios)
+            //    {
+            //        _publicaciones.Add(comentario);
+            //    }
+            //}
         }
 
 
@@ -350,6 +350,21 @@ namespace Obligatorio_Dominio
                     resultados.Add(post);
                 }
             }
+            return resultados;
+        }
+
+        public List<Post> ListarPublicacionesPropias(Miembro miembro, List<Publicacion> publicaciones)
+        {
+            List<Post> resultados = new List<Post>();
+
+            foreach (Publicacion publicacion in publicaciones)
+            {
+                if (publicacion is Post post && post.Autor == miembro)
+                {
+                    resultados.Add(post);
+                }
+            }
+
             return resultados;
         }
 
