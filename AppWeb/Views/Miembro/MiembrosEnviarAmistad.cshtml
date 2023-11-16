@@ -11,19 +11,30 @@
 
 @if (ViewBag.MiembrosDisponibles != null)
 {
-    foreach (var miembro in ViewBag.MiembrosDisponibles)
-    {
-        <tr>
-            <td>@miembro.Nombre</td>
-            <td>@miembro.Mail</td>
-            <td>
-                <form action="/Miembro/EnviarInvitacion" method="post">
-                    <input type="hidden" name="mail" value="@miembro.Mail" />
-                    <input type="submit" value="Enviar Solicitud" class="btn btn-primary" />
-                </form>
-            </td>
-        </tr>
-    }
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Correo Electrónico</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var miembro in ViewBag.MiembrosDisponibles)
+            {
+                <tr>
+                    <td>@miembro.Nombre</td>
+                    <td>@miembro.Mail</td>
+                    <td>
+                        <form action="/Miembro/EnviarInvitacion" method="post">
+                            <input type="hidden" name="mail" value="@miembro.Mail" />
+                            <button type="submit" class="btn btn-primary">Enviar Solicitud</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 }
 else
 {

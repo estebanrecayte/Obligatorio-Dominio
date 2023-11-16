@@ -35,37 +35,16 @@ namespace Obligatorio_Dominio
 
         public void PrecargaInvitaciones()
         {
-            List<string> correosDeseados = new List<string>
-            {
-                "esteban@gmail.com", "mateo@gmail.com", "carlos@gmail.com",
-                "laura@gmail.com", "maria@gmail.com", "pedro@gmail.com",
-                "luis@gmail.com", "sara@gmail.com", "andres@gmail.com",
-                "lucas@gmail.com"
-            };
-            List<Miembro> miembrosDeseados = new List<Miembro>();
-
-            foreach (string correo in correosDeseados)
-            {
-                foreach (Miembro miembro in _miembros)
-                {
-                    if (miembro.Mail == correo)
-                    {
-                        miembrosDeseados.Add(miembro);
-                        break; 
-                    }
-                }
-            }
-
-            if (miembrosDeseados.Count == correosDeseados.Count)
+            if (_miembros.Count >= 2)
             {
                 Random random = new Random();
                 List<Miembro> miembrosProcesados = new List<Miembro>();
 
-                foreach (Miembro miembro1 in miembrosDeseados)
+                foreach (Miembro miembro1 in _miembros)
                 {
                     miembrosProcesados.Add(miembro1);
 
-                    foreach (Miembro miembro2 in miembrosDeseados)
+                    foreach (Miembro miembro2 in _miembros)
                     {
                         if (miembro1 != miembro2 && !miembrosProcesados.Contains(miembro2))
                         {
@@ -79,9 +58,10 @@ namespace Obligatorio_Dominio
             }
             else
             {
-                throw new Exception("No se pueden crear invitaciones porque no se encontraron suficientes miembros en el sistema.");
+                throw new Exception("No se pueden crear invitaciones porque no hay suficientes miembros en el sistema.");
             }
         }
+
 
         public Administrador BuscarAdministrador(string correo)
         {
@@ -382,12 +362,6 @@ namespace Obligatorio_Dominio
                 if (publicacion is Post post && PostHabilitadoParaMiembro(publicacion, miembro))
                 {
                     resultados.Add(post);
-
-                    // Agregar los comentarios habilitados para el miembro
-                    foreach (Comentario comentario in post.Comentarios)
-                    { 
-                            resultados.Add(comentario);
-                        }
                 }
             }
 
@@ -436,6 +410,30 @@ namespace Obligatorio_Dominio
             }
             return aux;
         }
+
+
+        public List<Invitacion> ObtenerInvitacionesPendientes(string correoMiembro)
+        {
+            Miembro miembroActual = BuscarMiembro(correoMiembro);
+
+            if (miembroActual == null)
+            {
+                throw new Exception($"El miembro con correo {correoMiembro} no existe.");
+            }
+
+            List<Invitacion> invitacionesPendientes = new List<Invitacion>();
+
+            foreach (Invitacion invitacion in _invitaciones)
+            {
+                if (invitacion.MiembroSolicito == miembroActual && invitacion.Estado == Estado.PendienteAprobacion)
+                {
+                    invitacionesPendientes.Add(invitacion);
+                }
+            }
+
+            return invitacionesPendientes;
+        }
+
     }
 }
 

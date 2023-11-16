@@ -42,6 +42,11 @@ namespace Obligatorio_Dominio
             }
         }
 
+        public void EstablecerAutor(Miembro autor)
+        {
+            Autor = autor;
+        }
+
         public void ValidarContenido()
         {
             if (string.IsNullOrEmpty(Contenido))

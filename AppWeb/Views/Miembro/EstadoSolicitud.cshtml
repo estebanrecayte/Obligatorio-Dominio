@@ -1,0 +1,29 @@
+﻿@model Obligatorio_Dominio.Miembro
+
+@{
+    ViewData["Title"] = "Estado de Solicitud de Amistad";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center">@ViewData["Title"]</h2>
+
+    @if (ViewBag.AccionRealizada != null)
+    {
+        <div class="alert alert-@ViewBag.ClaseAlerta text-center" role="alert">
+            @if (ViewBag.AccionRealizada == "Aceptar")
+            {
+                <strong style="color: #155724;">¡Solicitud Aceptada!</strong> 
+            }
+            else if (ViewBag.AccionRealizada == "Rechazar")
+            {
+                <strong style="color: #721c24;">Solicitud Rechazada</strong>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info text-center">
+            <strong>No hay información para mostrar.</strong>
+        </div>
+    }
+</div>
