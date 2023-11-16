@@ -1,5 +1,5 @@
 ﻿@using Obligatorio_Dominio
-@model Publicacion
+@model Post
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
@@ -14,22 +14,29 @@
     </div>
 }
 
-<div class="row">
-    <div class="col-md-6">
-        <h3>Realizar nueva publicación</h3>
-        <form asp-action="CrearPublicacion" method="post">
-            <div class="form-group">
-                <label for="Titulo">Título:</label>
-                <input asp-for="Titulo" class="form-control name="Titulo" />
-            </div>
-            <div class="form-group">
-                <label for="Contenido">Contenido:</label>
-                <textarea asp-for="Contenido" class="form-control" name="Contenido" rows="5"></textarea>
-            </div>
-            
-            <button type="submit" class="btn btn-primary mt-3">Publicar</button>
-        </form>
+<form asp-action="CrearPublicacion" method="post" class="col-md-6">
+    <div class="form-group">
+        <label for="Titulo">Título:</label>
+        <input asp-for="Titulo" class="form-control" />
     </div>
+    <div class="form-group">
+        <label for="Contenido">Contenido:</label>
+        <textarea asp-for="Contenido" class="form-control" rows="5"></textarea>
+    </div>
+    <div class="form-group">
+        <label for="Imagen">URL de la Imagen:</label>
+        <input asp-for="Imagen" class="form-control" />
+    </div>
+    <div class="form-check">
+        <input asp-for="Publico" class="form-check-input" />
+        <label class="form-check-label" for="Publico">¿Es público?</label>
+    </div>
+    <div class="form-check">
+        <input asp-for="Censurado" class="form-check-input" />
+        <label class="form-check-label" for="Censurado">¿Es censurado?</label>
+    </div>
+    <button type="submit" class="btn btn-primary mt-3">Publicar</button>
+</form>
     <div class="col-md-6">
         <h3>Mis Publicaciones</h3>
         @if (@Model != null)

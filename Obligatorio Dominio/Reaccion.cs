@@ -5,7 +5,7 @@ namespace Obligatorio_Dominio
 {
     public class Reaccion
     {
-        public string Tipo { get; private set; }
+        public string Tipo { get; set; }
         private List<Miembro> ListaAutor { get; set; }
 
         public Reaccion() { }

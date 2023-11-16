@@ -250,7 +250,12 @@ namespace AppWeb.Controllers
             {
                 // Lógica para validar y agregar la publicación al sistema
                 post.EstablecerAutor(miembroActual);
+                post.Fecha=DateTime.Now;
                 _sistema.AltaPublicacion(post);
+                
+                
+                // Tirale en la linea 254 un breakpoint y hacele debug. Agregue en la linea 253 esa funcion para que tambien tenga la fecha que se hace
+
                 return RedirectToAction("MisPublicaciones"); // Redirige a la acción MisPublicaciones después de una publicación exitosa
             }
             catch (Exception e)
@@ -281,7 +286,7 @@ namespace AppWeb.Controllers
                 List<Publicacion> todosLosPosts = _sistema.ListarPublicacionesHabilitadasParaMiembro(miembroActual);
                 ViewBag.Posts = _sistema.ListarPublicacionesPropias(miembroActual, todosLosPosts);
                 
-
+               
                 return View();
             }
             catch (Exception e)

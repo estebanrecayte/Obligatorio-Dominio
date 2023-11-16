@@ -10,10 +10,10 @@ namespace Obligatorio_Dominio
     {
         public int Id { get; private set; }
         private static int ultId = 1; 
-        public string Titulo { get; private set; }
-        public string Contenido { get; private set; }
-        public DateTime Fecha { get; private set; }
-        public Miembro Autor { get; private set; }
+        public string Titulo { get;  set; }
+        public string Contenido { get;  set; }
+        public DateTime Fecha { get;  set; }
+        public Miembro Autor { get;  set; }
         public List<Reaccion> Reacciones { get; set; }
         public TipoReaccion TipoReaccion { get; set; }
 
