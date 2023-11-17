@@ -122,13 +122,18 @@ namespace Obligatorio_Dominio
             }
 
             _invitaciones.Add(invitacion);
+        }
 
+
+        public void AceptarAmistad(Invitacion invitacion)
+        {
             if (invitacion.Estado == Estado.Aprobada)
             {
                 invitacion.MiembroSolicitante.ListaAmigos.Add(invitacion.MiembroSolicito);
                 invitacion.MiembroSolicito.ListaAmigos.Add(invitacion.MiembroSolicitante);
             }
         }
+
 
         public void PrecargaAdm()
         {
@@ -152,13 +157,10 @@ namespace Obligatorio_Dominio
 
         public void PrecargaMiembros()
         {
-            Miembro unMiembro1 = new Miembro("esteban@gmail.com", "contrasena123", "Esteban", "Recayte", new DateTime(1995, 05, 04), false);
-            AltaMiembro(unMiembro1);
-
             Miembro unMiembro2 = new Miembro("mateo@gmail.com", "mateo1234", "Mateo", "Rodriguez", new DateTime(1997, 02, 01), true);
             AltaMiembro(unMiembro2);
 
-            Miembro unMiembro3 = new Miembro("carlos@gmail.com", "carlos1234", "Carlos", "Lopez", new DateTime(1983, 07, 10), true);
+            Miembro unMiembro3 = new Miembro("carlos@gmail.com", "carlos1234", "Carlos", "Lopez", new DateTime(1983, 07, 10), false);
             AltaMiembro(unMiembro3);
 
             Miembro unMiembro4 = new Miembro("laura@gmail.com", "laura1234", "Laura", "Martinez", new DateTime(1995, 12, 03), false);
@@ -167,7 +169,7 @@ namespace Obligatorio_Dominio
             Miembro unMiembro5 = new Miembro("maria@gmail.com", "maria1234", "Maria", "Sanchez", new DateTime(1987, 04, 18), false);
             AltaMiembro(unMiembro5);
 
-            Miembro unMiembro6 = new Miembro("pedro@gmail.com", "pedro1234", "Pedro", "Gomez", new DateTime(1992, 06, 25), true);
+            Miembro unMiembro6 = new Miembro("pedro@gmail.com", "pedro1234", "Pedro", "Gomez", new DateTime(1992, 06, 25), false);
             AltaMiembro(unMiembro6);
 
             Miembro unMiembro7 = new Miembro("luis@gmail.com", "luis1234", "Luis", "Fernandez", new DateTime(1988, 11, 07), false);
@@ -179,7 +181,7 @@ namespace Obligatorio_Dominio
             Miembro unMiembro9 = new Miembro("andres@gmail.com", "andres1234", "Andres", "Perez", new DateTime(1996, 09, 14), false);
             AltaMiembro(unMiembro9);
 
-            Miembro unMiembro10 = new Miembro("lucas@gmail.com", "lucas1234", "Lucas", "Lopez", new DateTime(1991, 01, 08), true);
+            Miembro unMiembro10 = new Miembro("lucas@gmail.com", "lucas1234", "Lucas", "Lopez", new DateTime(1991, 01, 08), false);
             AltaMiembro(unMiembro10);
         }
 
@@ -376,7 +378,7 @@ namespace Obligatorio_Dominio
             {
                 if (publicacion is Post post && PostHabilitadoParaMiembro(publicacion, miembro))
                 {
-                    resultados.Add(post);
+                    resultados.Add(post);   
                 }
             }
 
@@ -440,7 +442,7 @@ namespace Obligatorio_Dominio
 
             foreach (Invitacion invitacion in _invitaciones)
             {
-                if (invitacion.MiembroSolicito == miembroActual && invitacion.Estado == Estado.PendienteAprobacion)
+                if (invitacion.MiembroSolicitante == miembroActual && invitacion.Estado == Estado.PendienteAprobacion)
                 {
                     invitacionesPendientes.Add(invitacion);
                 }

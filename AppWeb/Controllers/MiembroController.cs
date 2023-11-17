@@ -142,6 +142,7 @@ namespace AppWeb.Controllers
             return View("VerSolicitudes");
         }
 
+
         [HttpPost]
         public IActionResult AceptarSolicitudAmistad(int invitacionId)
         {
@@ -242,8 +243,7 @@ namespace AppWeb.Controllers
 
             if (miembroActual.Bloqueado)
             {
-                ViewBag.error = "No puedes realizar publicaciones porque estás bloqueado por el administrador.";
-                return View("Error");
+                return View("UserBloqueado");
             }
 
             try
@@ -251,17 +251,20 @@ namespace AppWeb.Controllers
                 // Lógica para validar y agregar la publicación al sistema
                 post.EstablecerAutor(miembroActual);
                 post.Fecha=DateTime.Now;
+                post.TipoReaccion = TipoReaccion.SinReaccion;
                 _sistema.AltaPublicacion(post);
-                
-                
+
+                List<Publicacion> todosLosPosts = _sistema.ListarPublicacionesHabilitadasParaMiembro(miembroActual);
+                ViewBag.Posts = _sistema.ListarPublicacionesPropias(miembroActual, todosLosPosts);
+
                 // Tirale en la linea 254 un breakpoint y hacele debug. Agregue en la linea 253 esa funcion para que tambien tenga la fecha que se hace
 
-                return RedirectToAction("MisPublicaciones"); // Redirige a la acción MisPublicaciones después de una publicación exitosa
+                return View("MisPublicaciones"); // Redirige a la acción MisPublicaciones después de una publicación exitosa
             }
             catch (Exception e)
             {
                 ViewBag.error = e.Message;
-                return View("Error");
+                return View();
             }
         }
 
@@ -277,8 +280,7 @@ namespace AppWeb.Controllers
 
             if (miembroActual.Bloqueado) //cambie el simbolo ! para que verifique si esta bloqueado
             {
-                ViewBag.error = "No puedes realizar publicaciones porque estás bloqueado por el administrador.";
-                return View("Error");
+                return View("UserBloqueado");
             }
 
             try

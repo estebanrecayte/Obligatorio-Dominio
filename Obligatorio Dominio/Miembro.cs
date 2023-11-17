@@ -160,7 +160,7 @@ namespace Obligatorio_Dominio
             return false;
         }
 
-        private void RecibirSolicitudAmistad(Invitacion invitacion)
+        public void RecibirSolicitudAmistad(Invitacion invitacion)
         {
             if (!Bloqueado)
             {

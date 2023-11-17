@@ -1,5 +1,6 @@
 ﻿@using Obligatorio_Dominio
 @model Post
+
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
@@ -37,24 +38,24 @@
     </div>
     <button type="submit" class="btn btn-primary mt-3">Publicar</button>
 </form>
-    <div class="col-md-6">
-        <h3>Mis Publicaciones</h3>
-        @if (@Model != null)
+
+
+<div class="col-md-6">
+    <h3>Mis Publicaciones</h3>
+    @if (ViewBag.Posts == null || ViewBag.Posts.Count == 0)
+    {
+        <p>No tienes publicaciones aún.</p>
+    }
+    else
+    {
+        foreach (var publicacion in ViewBag.Posts)
         {
-            foreach (var publicacion in ViewBag.Posts)
-            {
-                <div class="card mt-3">
-                    <div class="card-body">
-                        <h5 class="card-title">@publicacion.Titulo</h5>
-                        <p class="card-text">@publicacion.Contenido</p>
-                        <!-- Agrega aquí cualquier otra información que quieras mostrar -->
-                    </div>
+            <div class="card mt-3">
+                <div class="card-body">
+                    <h5 class="card-title">@publicacion.Titulo</h5>
+                    <p class="card-text">@publicacion.Contenido</p>
                 </div>
-            }
+            </div>
         }
-        else
-        {
-            <p>No tienes publicaciones aún.</p>
-        }
-    </div>
+    }
 </div>
