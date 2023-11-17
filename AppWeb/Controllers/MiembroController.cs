@@ -297,5 +297,60 @@ namespace AppWeb.Controllers
                 return View();
             }
         }
+        [HttpPost]
+        public IActionResult SeleccionarReaccion(int publicacionId, string reaccion)
+        {
+            // Obtener la publicación
+            Publicacion publicacion = _sistema.ObtenerPublicacionPorId(publicacionId);
+
+            // Validar que la publicación existe y tiene TipoReaccion.SinReaccion
+            if (publicacion != null && publicacion.TipoReaccion == TipoReaccion.SinReaccion)
+            {
+                // Obtener el miembro actual
+                Miembro miembroActual = ObtenerMiembroActualDesdeSesion();
+
+                // Validar que el miembro existe
+                if (miembroActual != null)
+                {
+                    // Asignar la reacción a la publicación
+                    publicacion.TipoReaccion = reaccion == "Like" ? TipoReaccion.Like : TipoReaccion.Dislike;
+                    // Puedes almacenar el miembro que ha reaccionado en la lista de autores de la reacción si es necesario.
+
+                    // Redireccionar a la vista de publicaciones habilitadas
+                    return RedirectToAction("PostHabilitadosMiembro");
+                }
+            }
+
+            // Manejar el caso de error (puedes redirigir a una página de error)
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public IActionResult CambiarReaccion(int publicacionId, string reaccion)
+        {
+            // Obtener la publicación
+            Publicacion publicacion = _sistema.ObtenerPublicacionPorId(publicacionId);
+
+            // Validar que la publicación existe y tiene TipoReaccion diferente de SinReaccion
+            if (publicacion != null && publicacion.TipoReaccion != TipoReaccion.SinReaccion)
+            {
+                // Obtener el miembro actual
+                Miembro miembroActual = ObtenerMiembroActualDesdeSesion();
+
+                // Validar que el miembro existe
+                if (miembroActual != null)
+                {
+                    // Cambiar la reacción de la publicación
+                    publicacion.TipoReaccion = reaccion == "Like" ? TipoReaccion.Like : TipoReaccion.Dislike;
+                    // Puedes actualizar la lista de autores de la reacción si es necesario.
+
+                    // Redireccionar a la vista de publicaciones habilitadas
+                    return RedirectToAction("PostHabilitadosMiembro");
+                }
+            }
+
+            // Manejar el caso de error (puedes redirigir a una página de error)
+            return RedirectToAction("Index");
+        }
     }
 }

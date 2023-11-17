@@ -451,6 +451,18 @@ namespace Obligatorio_Dominio
             return invitacionesPendientes;
         }
 
+        public Publicacion ObtenerPublicacionPorId(int publicacionId)
+        {
+            foreach (Publicacion publicacion in _publicaciones)
+            {
+                if (publicacion.Id == publicacionId)
+                {
+                    return publicacion;
+                }
+            }
+            return null;
+        }
+
     }
 }
 

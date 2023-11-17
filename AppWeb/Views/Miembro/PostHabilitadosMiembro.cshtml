@@ -24,8 +24,33 @@
                     <td>@publicacion.Contenido</td>
                     <td>@publicacion.Autor.Nombre</td>
                     <td>
-                       @publicacion.TipoReaccion
+                    <td>
+                            @if (publicacion.TipoReaccion == TipoReaccion.SinReaccion)
+                            {
+                            <form method="post" action="@Url.Action("SeleccionarReaccion", "Miembro")">
+                                <input type="hidden" name="publicacionId" value="@publicacion.Id" />
+                                <button type="submit" name="reaccion" value="Like" class="btn btn-outline-primary">Like</button>
+                                <button type="submit" name="reaccion" value="Dislike" class="btn btn-outline-danger">Dislike</button>
+                            </form>
+                            }
+                            else if (publicacion.TipoReaccion == TipoReaccion.Like)
+                            {
+                            <p class="text-success">Te gusta</p>
+                            <form method="post" action="@Url.Action("CambiarReaccion", "Miembro")">
+                                <input type="hidden" name="publicacionId" value="@publicacion.Id" />
+                                <button type="submit" name="reaccion" value="Dislike" class="btn btn-outline-danger">Cambiar a Dislike</button>
+                            </form>
+                            }
+                            else if (publicacion.TipoReaccion == TipoReaccion.Dislike)
+                            {
+                            <p class="text-danger">No te gusta</p>
+                            <form method="post" action="@Url.Action("CambiarReaccion", "Miembro")">
+                                <input type="hidden" name="publicacionId" value="@publicacion.Id" />
+                                <button type="submit" name="reaccion" value="Like" class="btn btn-outline-primary">Cambiar a Like</button>
+                            </form>
+                            }
                     </td>
+
                 </tr>
             }
         </tbody>
