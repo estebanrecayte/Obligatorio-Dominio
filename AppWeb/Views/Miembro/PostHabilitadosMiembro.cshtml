@@ -14,6 +14,10 @@
                 <th scope="col">Contenido</th>
                 <th scope="col">Autor</th>
                 <th scope="col">Tipo Reaccion</th>
+                <th scope="col">Likes</th> <!-- Nueva columna -->
+                <th scope="col">Dislikes</th> <!-- Nueva columna -->
+                <th scope="col">Valor de aceptación</th> <!-- Nueva columna -->
+                <th scope="col">Comentarios</th>
             </tr>
         </thead>
         <tbody>
@@ -23,32 +27,55 @@
                     <td>@publicacion.Titulo</td>
                     <td>@publicacion.Contenido</td>
                     <td>@publicacion.Autor.Nombre</td>
+
                     <td>
-                    <td>
-                            @if (publicacion.TipoReaccion == TipoReaccion.SinReaccion)
-                            {
+                        @if (publicacion.TipoReaccion == TipoReaccion.SinReaccion)
+                        {
                             <form method="post" action="@Url.Action("SeleccionarReaccion", "Miembro")">
                                 <input type="hidden" name="publicacionId" value="@publicacion.Id" />
                                 <button type="submit" name="reaccion" value="Like" class="btn btn-outline-primary">Like</button>
                                 <button type="submit" name="reaccion" value="Dislike" class="btn btn-outline-danger">Dislike</button>
                             </form>
-                            }
-                            else if (publicacion.TipoReaccion == TipoReaccion.Like)
-                            {
+                        }
+                        else if (publicacion.TipoReaccion == TipoReaccion.Like)
+                        {
                             <p class="text-success">Te gusta</p>
                             <form method="post" action="@Url.Action("CambiarReaccion", "Miembro")">
                                 <input type="hidden" name="publicacionId" value="@publicacion.Id" />
                                 <button type="submit" name="reaccion" value="Dislike" class="btn btn-outline-danger">Cambiar a Dislike</button>
                             </form>
-                            }
-                            else if (publicacion.TipoReaccion == TipoReaccion.Dislike)
-                            {
+                        }
+                        else if (publicacion.TipoReaccion == TipoReaccion.Dislike)
+                        {
                             <p class="text-danger">No te gusta</p>
                             <form method="post" action="@Url.Action("CambiarReaccion", "Miembro")">
                                 <input type="hidden" name="publicacionId" value="@publicacion.Id" />
                                 <button type="submit" name="reaccion" value="Like" class="btn btn-outline-primary">Cambiar a Like</button>
                             </form>
+                        }
+                    </td>
+
+                    <td>@publicacion.ObtenerLikes()</td> <!-- Usar el método ObtenerLikes -->
+                    <td>@publicacion.ObtenerDislikes()</td> <!-- Usar el método ObtenerDislikes -->
+
+                    <td>@publicacion.CalcularValorAceptacion()</td> <!-- Utilizar el método CalcularValorAceptacion -->
+
+                    <td>
+                        <!-- Mostrar los comentarios de la publicación -->
+                        <ul>
+                            @foreach (var comentario in publicacion.Comentarios)
+                            {
+                                <li>@comentario.Autor.Nombre: @comentario.Contenido</li>
                             }
+                        </ul>
+
+                        <!-- Formulario para agregar comentarios -->
+                        <form method="post" action="@Url.Action("ComentarPublicacion", "Miembro")">
+                            <input type="hidden" name="publicacionId" value="@publicacion.Id" />
+                            <textarea name="contenidoComentario" placeholder="Añadir un comentario"></textarea>
+                            <input type="checkbox" name="esPrivado" /> ¿Es privado?
+                            <button type="submit" class="btn btn-primary">Comentar</button>
+                        </form>
                     </td>
 
                 </tr>

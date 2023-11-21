@@ -71,6 +71,13 @@ namespace AppWeb.Controllers
 
             try
             {
+
+                // Verificar si el miembro actual está bloqueado
+                if (miembroActual.Bloqueado)
+                {
+                    return View("UserBloqueado");
+                }
+
                 Miembro miembroDestino = _sistema.BuscarMiembro(mail);
 
                 if (miembroDestino == null)
@@ -149,6 +156,11 @@ namespace AppWeb.Controllers
             string mailMiembroActual = HttpContext.Session.GetString("mail");
             Miembro miembro = _sistema.BuscarMiembro(mailMiembroActual);
 
+            if (miembro.Bloqueado)
+            {
+                return View("UserBloqueado");
+            }
+
             try
             {
                 // Obtener invitaciones pendientes del miembro actual
@@ -188,6 +200,11 @@ namespace AppWeb.Controllers
         {
             string mailMiembroActual = HttpContext.Session.GetString("mail");
             Miembro miembro = _sistema.BuscarMiembro(mailMiembroActual);
+
+            if (miembro.Bloqueado)
+            {
+                return View("UserBloqueado");
+            }
 
             try
             {
@@ -252,12 +269,14 @@ namespace AppWeb.Controllers
                 post.EstablecerAutor(miembroActual);
                 post.Fecha=DateTime.Now;
                 post.TipoReaccion = TipoReaccion.SinReaccion;
+                post.Reacciones = new List<Reaccion>();
+
+                // Agregar un comentario a la publicación
+                post.Comentarios = new List<Comentario>(); // Inicializar la lista si no está inicializada
                 _sistema.AltaPublicacion(post);
 
                 List<Publicacion> todosLosPosts = _sistema.ListarPublicacionesHabilitadasParaMiembro(miembroActual);
                 ViewBag.Posts = _sistema.ListarPublicacionesPropias(miembroActual, todosLosPosts);
-
-                // Tirale en la linea 254 un breakpoint y hacele debug. Agregue en la linea 253 esa funcion para que tambien tenga la fecha que se hace
 
                 return View("MisPublicaciones"); // Redirige a la acción MisPublicaciones después de una publicación exitosa
             }
@@ -278,7 +297,7 @@ namespace AppWeb.Controllers
                 return RedirectToAction("Login", "Inicio");
             }
 
-            if (miembroActual.Bloqueado) //cambie el simbolo ! para que verifique si esta bloqueado
+            if (miembroActual.Bloqueado)
             {
                 return View("UserBloqueado");
             }
@@ -303,54 +322,111 @@ namespace AppWeb.Controllers
             // Obtener la publicación
             Publicacion publicacion = _sistema.ObtenerPublicacionPorId(publicacionId);
 
-            // Validar que la publicación existe y tiene TipoReaccion.SinReaccion
+
             if (publicacion != null && publicacion.TipoReaccion == TipoReaccion.SinReaccion)
             {
-                // Obtener el miembro actual
                 Miembro miembroActual = ObtenerMiembroActualDesdeSesion();
 
-                // Validar que el miembro existe
+                if (miembroActual.Bloqueado)
+                {
+                    return View("UserBloqueado");
+                }
+
                 if (miembroActual != null)
                 {
-                    // Asignar la reacción a la publicación
-                    publicacion.TipoReaccion = reaccion == "Like" ? TipoReaccion.Like : TipoReaccion.Dislike;
-                    // Puedes almacenar el miembro que ha reaccionado en la lista de autores de la reacción si es necesario.
+                    Reaccion nuevaReaccion = new Reaccion(reaccion, miembroActual);
+                    publicacion.AgregarReaccion(nuevaReaccion);
 
-                    // Redireccionar a la vista de publicaciones habilitadas
+                    publicacion.TipoReaccion = reaccion == "Like" ? TipoReaccion.Like : TipoReaccion.Dislike;
                     return RedirectToAction("PostHabilitadosMiembro");
                 }
             }
-
-            // Manejar el caso de error (puedes redirigir a una página de error)
             return RedirectToAction("Index");
         }
 
         [HttpPost]
         public IActionResult CambiarReaccion(int publicacionId, string reaccion)
         {
-            // Obtener la publicación
             Publicacion publicacion = _sistema.ObtenerPublicacionPorId(publicacionId);
 
-            // Validar que la publicación existe y tiene TipoReaccion diferente de SinReaccion
             if (publicacion != null && publicacion.TipoReaccion != TipoReaccion.SinReaccion)
             {
-                // Obtener el miembro actual
                 Miembro miembroActual = ObtenerMiembroActualDesdeSesion();
 
-                // Validar que el miembro existe
+                if (miembroActual.Bloqueado)
+                {
+                    return View("UserBloqueado");
+                }
+
                 if (miembroActual != null)
                 {
-                    // Cambiar la reacción de la publicación
                     publicacion.TipoReaccion = reaccion == "Like" ? TipoReaccion.Like : TipoReaccion.Dislike;
-                    // Puedes actualizar la lista de autores de la reacción si es necesario.
+                    Reaccion nuevaReaccion = new Reaccion(reaccion, miembroActual);
+                    publicacion.Reacciones.Clear(); // Eliminar todas las reacciones existentes
+                    publicacion.AgregarReaccion(nuevaReaccion);
 
-                    // Redireccionar a la vista de publicaciones habilitadas
                     return RedirectToAction("PostHabilitadosMiembro");
                 }
             }
 
-            // Manejar el caso de error (puedes redirigir a una página de error)
             return RedirectToAction("Index");
         }
+
+
+        [HttpPost]
+        public IActionResult ComentarPublicacion(int publicacionId, string contenidoComentario, bool esPrivado)
+        {
+
+            try
+            {
+
+                Publicacion publicacion = _sistema.ObtenerPublicacionPorId(publicacionId);
+
+                if (publicacion != null)
+                {
+                    Miembro miembroActual = ObtenerMiembroActualDesdeSesion();
+
+                    if (miembroActual.Bloqueado)
+                    {
+                        return View("UserBloqueado");
+                    }
+
+                    if (miembroActual != null)
+                    {
+                        // Crear un nuevo comentario
+                        Comentario nuevoComentario = new Comentario
+                        {
+                            Titulo = "Titulo de comentario",
+                            Contenido = contenidoComentario,
+                            Autor = miembroActual,
+                            Fecha = DateTime.Now,
+                            TipoReaccion = TipoReaccion.SinReaccion,
+                            EsPrivado = esPrivado
+                        };
+
+                        // Verificar si la publicación es un Post
+                        if (publicacion is Post post)
+                        {
+                            // Agregar el comentario al Post
+                            post.AgregarComentario(nuevoComentario);
+
+                            // Utilizar AltaPublicacion para actualizar el Post en el sistema
+                            _sistema.AltaPublicacion(post);
+                        }
+
+                        // Redirigir a la vista de publicaciones habilitadas
+                        return View("PostHabilitadosMiembro");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                ViewBag.error = e.Message;
+            }
+
+            return RedirectToAction("PostHabilitadosMiembro");
+        }
+
+
     }
 }

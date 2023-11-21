@@ -6,13 +6,14 @@ namespace Obligatorio_Dominio
     public class Reaccion
     {
         public string Tipo { get; set; }
-        private List<Miembro> ListaAutor { get; set; }
+        public Miembro Autor { get; set; }
 
         public Reaccion() { }
-        public Reaccion(string tipo, List<Miembro> listaAutor)
+
+        public Reaccion(string tipo, Miembro autor)
         {
             Tipo = tipo;
-            ListaAutor = listaAutor;
+            Autor = autor;
         }
     }
 }

@@ -9,12 +9,27 @@ namespace Obligatorio_Dominio
 {
     public class Comentario : Publicacion
     {
-        public bool EsPrivado { get; private set; }
+        public bool EsPrivado { get; set; }
 
         public Comentario(string titulo, string contenido, DateTime fecha, Miembro autor, TipoReaccion tipoReaccion, bool esPrivado)
             : base(titulo, contenido, fecha, autor, tipoReaccion)
         {
             EsPrivado = esPrivado;
+        }
+
+        public Comentario()
+        {
+
+        }
+
+        public override int CalcularValorAceptacion()
+        {
+            int likes = ObtenerLikes() * 5;
+            int dislikes = ObtenerDislikes() * -2;
+
+            int va = likes + dislikes;
+
+            return va;
         }
 
         public override string ToString()

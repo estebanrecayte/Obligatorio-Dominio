@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Obligatorio_Dominio
 {
-    public class Publicacion
+    public abstract class Publicacion
     {
         public int Id { get; private set; }
         private static int ultId = 1; 
@@ -56,6 +56,23 @@ namespace Obligatorio_Dominio
                 throw new Exception("El contenido no puede ser vacío");
             }
         }
+
+        public void AgregarReaccion(Reaccion reaccion)
+        {
+            Reacciones.Add(reaccion);
+        }
+
+        public int ObtenerLikes()
+        {
+            return Reacciones.Count(r => r.Tipo == "Like");
+        }
+
+        public int ObtenerDislikes()
+        {
+            return Reacciones.Count(r => r.Tipo == "Dislike");
+        }
+
+        public abstract int CalcularValorAceptacion();
 
         public override bool Equals(object? obj)
         {

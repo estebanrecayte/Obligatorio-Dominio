@@ -37,24 +37,22 @@ namespace Obligatorio_Dominio
         {
             if (_miembros.Count >= 2)
             {
-                Random random = new Random();
-                List<Miembro> miembrosProcesados = new List<Miembro>();
-
-                foreach (Miembro miembro1 in _miembros)
-                {
-                    miembrosProcesados.Add(miembro1);
-
-                    foreach (Miembro miembro2 in _miembros)
-                    {
-                        if (miembro1 != miembro2 && !miembrosProcesados.Contains(miembro2))
-                        {
-                            Estado estadoAleatorio = (Estado)random.Next(0, Enum.GetValues(typeof(Estado)).Length);
-
-                            Invitacion invitacion = new Invitacion(miembro1, miembro2, DateTime.Now, estadoAleatorio);
-                            AltaInvitacion(invitacion);
-                        }
-                    }
-                }
+                Miembro miembro1 = _miembros[0];
+                Miembro miembro2 = _miembros[1];
+                Miembro miembro3 = _miembros[2];
+                Miembro miembro4 = _miembros[3];
+                Invitacion invitacion1 = new Invitacion(miembro1, miembro2, DateTime.Now, Estado.PendienteAprobacion);
+                Invitacion invitacion2 = new Invitacion(miembro2, miembro3, DateTime.Now, Estado.PendienteAprobacion);
+                Invitacion invitacion3 = new Invitacion(miembro3, miembro1, DateTime.Now, Estado.PendienteAprobacion);
+                Invitacion invitacion4 = new Invitacion(miembro1, miembro4, DateTime.Now, Estado.PendienteAprobacion);
+                Invitacion invitacion5 = new Invitacion(miembro2, miembro4, DateTime.Now, Estado.PendienteAprobacion);
+                Invitacion invitacion6 = new Invitacion(miembro3, miembro4, DateTime.Now, Estado.PendienteAprobacion);
+                AltaInvitacion(invitacion1);
+                AltaInvitacion(invitacion2);
+                AltaInvitacion(invitacion3);
+                AltaInvitacion(invitacion4);
+                AltaInvitacion(invitacion5);
+                AltaInvitacion(invitacion6);
             }
             else
             {
@@ -210,7 +208,7 @@ namespace Obligatorio_Dominio
 
                 for (int i = 0; i < 5; i++)
                 {
-                    TipoReaccion reaccionAleatoria = (TipoReaccion)random.Next(0, Enum.GetValues(typeof(TipoReaccion)).Length);
+                    TipoReaccion reaccionAleatoria = TipoReaccion.SinReaccion;
 
                     DateTime fechaPublicacion;
 
@@ -388,6 +386,24 @@ namespace Obligatorio_Dominio
 
         public bool PostHabilitadoParaMiembro(Publicacion publicacion, Miembro miembro)
         {
+            // Verificar si el miembro es nulo
+            if (miembro == null)
+            {
+                // Esto supone que el correo electrónico es un identificador único
+                Miembro miembroEncontrado = BuscarMiembro(publicacion?.Autor?.Mail);
+
+                // Si se encuentra el miembro, asignarlo a la variable miembro
+                if (miembroEncontrado.Nombre != null)
+                {
+                    miembro = miembroEncontrado;
+                }
+                else
+                {
+                    // Si no se encuentra el miembro, el post no está habilitado
+                    return false;
+                }
+            }
+
             if (publicacion is Post post)
             {
                 // Verificar si el post es público, pertenece a un amigo del miembro o es del propio miembro

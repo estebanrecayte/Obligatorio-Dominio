@@ -25,6 +25,21 @@ namespace Obligatorio_Dominio
             Comentarios = new List<Comentario>(); // Inicializar la lista de comentarios
         }
 
+        public override int CalcularValorAceptacion()
+        {
+            int likes = ObtenerLikes() * 5;
+            int dislikes = ObtenerDislikes() * -2;
+
+            int va = likes + dislikes;
+
+            if (Publico)
+            {
+                va += 10;
+            }
+
+            return va;
+        }
+
         public void AgregarComentario(Comentario comentario)
         {
             if (comentario != null)
