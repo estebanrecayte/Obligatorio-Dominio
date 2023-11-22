@@ -223,8 +223,9 @@ namespace Obligatorio_Dominio
                     }
 
                     bool esPublico = i % 2 == 0; // Determina si el post es público o privado
+                    bool esCensurado = i % 3 == 0;
 
-                    Post post = new Post($"Título del Post {i + 1}", $"Contenido del Post {i + 1}", fechaPublicacion, sinReaccion, autor, $"imagen{i + 1}.jpg", esPublico, false);
+                    Post post = new Post($"Título del Post {i + 1}", $"Contenido del Post {i + 1}", fechaPublicacion, sinReaccion, autor, $"imagen{i + 1}.jpg", esPublico, esCensurado);
 
                     for (int j = 0; j < 3; j++)
                     {
@@ -379,29 +380,30 @@ namespace Obligatorio_Dominio
 
         public bool PostHabilitadoParaMiembro(Publicacion publicacion, Miembro miembro)
         {
+            // Buscar al miembro basado en el correo del autor de la publicación
             Miembro miembroEncontrado = BuscarMiembro(publicacion?.Autor?.Mail);
 
-            // Verificar si el miembro es nulo
+            // Si el miembro pasado como parámetro es nulo, intenta utilizar el miembro encontrado
             if (miembro == null)
             {
-
-                if (miembroEncontrado.Nombre != null)
+                if (miembroEncontrado != null)
                 {
                     miembro = miembroEncontrado;
                 }
                 else
                 {
-                    return false;
+                    return false; // Si no se encontró el miembro, no se puede determinar la habilitación del post.
                 }
-
             }
 
+            // Verificar si la publicación es un Post
             if (publicacion is Post post)
             {
-                return post?.Censurado == false || post?.Autor == miembro || (miembro.EsAmigo(miembroEncontrado));
+                // Verificar si el post no está censurado, si el autor es el miembro o si el miembro es amigo del autor
+                return !post.Censurado || post.Autor == miembro || (miembro?.EsAmigo(miembroEncontrado) ?? false);
             }
-            return false; // Por defecto, no habilitado si no es un post
 
+            return false; // Si la publicación no es un Post, no está habilitada para el miembro.
         }
 
 

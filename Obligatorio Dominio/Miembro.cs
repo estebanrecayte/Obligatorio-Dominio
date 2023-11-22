@@ -145,7 +145,7 @@ namespace Obligatorio_Dominio
 
         public bool EsAmigo(Miembro miembro)
         {
-            return ListaAmigos.Contains(miembro);
+            return miembro != null && ListaAmigos?.Contains(miembro) == true;
         }
 
         public bool HaEnviadoSolicitud(Miembro miembro)
