@@ -208,7 +208,8 @@ namespace Obligatorio_Dominio
 
                 for (int i = 0; i < 5; i++)
                 {
-                    TipoReaccion reaccionAleatoria = TipoReaccion.SinReaccion;
+                    TipoReaccion sinReaccion = TipoReaccion.SinReaccion;
+                    TipoReaccion reaccionAleatoria = (TipoReaccion)random.Next(0, 3); // 0, 1, o 2
 
                     DateTime fechaPublicacion;
 
@@ -223,7 +224,7 @@ namespace Obligatorio_Dominio
 
                     bool esPublico = i % 2 == 0; // Determina si el post es público o privado
 
-                    Post post = new Post($"Título del Post {i + 1}", $"Contenido del Post {i + 1}", fechaPublicacion, reaccionAleatoria, autor, $"imagen{i + 1}.jpg", esPublico, false);
+                    Post post = new Post($"Título del Post {i + 1}", $"Contenido del Post {i + 1}", fechaPublicacion, sinReaccion, autor, $"imagen{i + 1}.jpg", esPublico, false);
 
                     for (int j = 0; j < 3; j++)
                     {
@@ -258,14 +259,6 @@ namespace Obligatorio_Dominio
             }
 
             _publicaciones.Add(publicacion);
-
-            //if (publicacion is Post post)
-            //{
-            //    foreach (var comentario in post.Comentarios)
-            //    {
-            //        _publicaciones.Add(comentario);
-            //    }
-            //}
         }
 
 
@@ -386,30 +379,29 @@ namespace Obligatorio_Dominio
 
         public bool PostHabilitadoParaMiembro(Publicacion publicacion, Miembro miembro)
         {
+            Miembro miembroEncontrado = BuscarMiembro(publicacion?.Autor?.Mail);
+
             // Verificar si el miembro es nulo
             if (miembro == null)
             {
-                // Esto supone que el correo electrónico es un identificador único
-                Miembro miembroEncontrado = BuscarMiembro(publicacion?.Autor?.Mail);
 
-                // Si se encuentra el miembro, asignarlo a la variable miembro
                 if (miembroEncontrado.Nombre != null)
                 {
                     miembro = miembroEncontrado;
                 }
                 else
                 {
-                    // Si no se encuentra el miembro, el post no está habilitado
                     return false;
                 }
+
             }
 
             if (publicacion is Post post)
             {
-                // Verificar si el post es público, pertenece a un amigo del miembro o es del propio miembro
-                return post?.Censurado == false || post?.Autor == miembro || (miembro?.ListaAmigos?.Contains(post.Autor) ?? false);
+                return post?.Censurado == false || post?.Autor == miembro || (miembro.EsAmigo(miembroEncontrado));
             }
             return false; // Por defecto, no habilitado si no es un post
+
         }
 
 
@@ -478,6 +470,24 @@ namespace Obligatorio_Dominio
             }
             return null;
         }
+
+
+        public List<Publicacion> BuscarPublicacionesPorTexto(string textoBusqueda, int valorAceptacion)
+        {
+            List<Publicacion> publicacionesFiltradas = new List<Publicacion>();
+
+            foreach (Publicacion publicacion in _publicaciones)
+            {
+                if ((publicacion is Post post && post.Contenido.Contains(textoBusqueda) && post.CalcularValorAceptacion() > valorAceptacion) ||
+                    (publicacion is Comentario comentario && comentario.Contenido.Contains(textoBusqueda) && comentario.CalcularValorAceptacion() > valorAceptacion))
+                {
+                    publicacionesFiltradas.Add(publicacion);
+                }
+            }
+
+            return publicacionesFiltradas;
+        }
+
 
     }
 }

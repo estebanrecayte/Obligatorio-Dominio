@@ -1,0 +1,36 @@
+﻿@using Obligatorio_Dominio
+@model List<Publicacion>
+
+@{
+}
+
+<h2>Publicaciones Filtradas</h2>
+
+@if (Model.Count > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Tipo</th>
+                <th>Contenido</th>
+                <th>Valor de Aceptación</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var publicacion in Model)
+            {
+                <tr>
+                    <td>@publicacion.GetType().Name</td>
+                    <td>@publicacion.Contenido</td>
+                    <td>@((publicacion is Post) ? ((Post)publicacion).CalcularValorAceptacion() : 0)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No se encontraron publicaciones que coincidan con los criterios de búsqueda.</p>
+}
+
+<a asp-action="Index">Volver a la página principal</a>

@@ -316,6 +316,7 @@ namespace AppWeb.Controllers
                 return View();
             }
         }
+
         [HttpPost]
         public IActionResult SeleccionarReaccion(int publicacionId, string reaccion)
         {
@@ -428,5 +429,43 @@ namespace AppWeb.Controllers
         }
 
 
+
+        public IActionResult BuscarPublicaciones(string textoBusqueda)
+        {
+            return View("BuscarPublicacion");
+        }
+
+
+        public IActionResult FiltrarPublicaciones(string textoBusqueda, int valorAceptacion)
+        {
+            try
+            {
+                Miembro miembroActual = ObtenerMiembroActualDesdeSesion();
+
+                if (miembroActual == null)
+                {
+                    return RedirectToAction("Login", "Inicio");
+                }
+
+                if (miembroActual.Bloqueado)
+                {
+                    return View("UserBloqueado");
+                }
+
+                List<Publicacion> publicacionesFiltradas = _sistema.BuscarPublicacionesPorTexto(textoBusqueda, valorAceptacion);
+
+                if (publicacionesFiltradas == null)
+                {
+                    publicacionesFiltradas = new List<Publicacion>();
+                }
+
+                return View("PublicacionesFiltradas", publicacionesFiltradas);
+            }
+            catch (Exception e)
+            {
+                ViewBag.error = e.Message;
+                return View();
+            }
+        }
     }
 }
