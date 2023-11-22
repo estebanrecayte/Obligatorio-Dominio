@@ -150,6 +150,11 @@ namespace Obligatorio_Dominio
 
         public bool HaEnviadoSolicitud(Miembro miembro)
         {
+            if (ListaInvitaciones == null)
+            {
+                return false; // O manejar el caso de ListaInvitaciones siendo nula de alguna manera
+            }
+
             foreach (Invitacion invitacion in ListaInvitaciones)
             {
                 if (invitacion.MiembroSolicitante == miembro)
